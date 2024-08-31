@@ -1,90 +1,93 @@
 package ar.edu.utn.frbb.tup.model;
 
-import java.time.LocalDateTime;
+import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
+import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
+import ar.edu.utn.frbb.tup.presentation.modelDTO.CuentaDto;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class Cuenta {
-    private long numeroCuenta;
-    LocalDateTime fechaCreacion;
-    int balance;
-    TipoCuenta tipoCuenta;
-    Cliente titular;
-    TipoMoneda moneda;
+public class  Cuenta {
+    private boolean estado;
+    private double balance;
+    private long CBU;
+    private long dniTitular;
+    private LocalDate fechaCreacion;
+    private TipoCuenta tipoCuenta;
+    private TipoMoneda tipoMoneda;
 
-    public Cuenta() {
-        this.numeroCuenta = new Random().nextLong();
+    public Cuenta(){
+        Random r = new Random();
         this.balance = 0;
-        this.fechaCreacion = LocalDateTime.now();
+        this.CBU = r.nextInt(900000) + 100000;
+        this.fechaCreacion = LocalDate.now();
+        this.estado = true;
     }
 
-    public Cliente getTitular() {
-        return titular;
+    public Cuenta(CuentaDto cuentaDto){
+        Random r = new Random();
+        this.balance = 0;
+        this.CBU = r.nextInt(900000) + 100000;
+        this.fechaCreacion = LocalDate.now();
+        this.estado = true;
+        this.dniTitular = cuentaDto.getDniTitular();
+        this.tipoCuenta = TipoCuenta.fromString(cuentaDto.getTipoCuenta());
+        this.tipoMoneda = TipoMoneda.fromString(cuentaDto.getTipoMoneda());
     }
 
-    public void setTitular(Cliente titular) {
-        this.titular = titular;
+    public boolean getEstado() {
+        return estado;
     }
-
-
-    public TipoCuenta getTipoCuenta() {
-        return tipoCuenta;
-    }
-
-    public Cuenta setTipoCuenta(TipoCuenta tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
+    public Cuenta setEstado(boolean estado) {
+        this.estado = estado;
         return this;
     }
 
-    public TipoMoneda getMoneda() {
-        return moneda;
+    public double getBalance() {
+        return balance;
     }
-
-    public Cuenta setMoneda(TipoMoneda moneda) {
-        this.moneda = moneda;
+    public Cuenta setBalance(double saldo) {
+        this.balance = saldo;
         return this;
     }
 
+    public long getCBU() {
+        return CBU;
+    }
+    public Cuenta setCBU(long CBU) {
+        this.CBU = CBU;
+        return this;
+    }
 
-    public LocalDateTime getFechaCreacion() {
+    public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
-
-    public Cuenta setFechaCreacion(LocalDateTime fechaCreacion) {
+    public Cuenta setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
         return this;
     }
 
-    public int getBalance() {
-        return balance;
+    public TipoCuenta getTipoCuenta() {
+        return tipoCuenta;
     }
-
-    public Cuenta setBalance(int balance) {
-        this.balance = balance;
-        return this;
-    }
-
-    public void debitarDeCuenta(int cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
-        if (cantidadADebitar < 0) {
-            throw new CantidadNegativaException();
-        }
-
-        if (balance < cantidadADebitar) {
-            throw new NoAlcanzaException();
-        }
-        this.balance = this.balance - cantidadADebitar;
-    }
-
-    public void setNumeroCuenta(long numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
-    }
-
-    public void forzaDebitoDeCuenta(int i) {
-        this.balance = this.balance - i;
-    }
-
-    public long getNumeroCuenta() {
-        return numeroCuenta;
+    public void setTipoCuenta(TipoCuenta tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
     }
 
 
+    public TipoMoneda getMoneda() {
+        return tipoMoneda;
+    }
+    public void setMoneda(TipoMoneda tipoMoneda) {
+        this.tipoMoneda = tipoMoneda;
+    }
+
+    public long getDniTitular() {
+        return dniTitular;
+    }
+    public void setDniTitular(long dniTitular) {
+        this.dniTitular = dniTitular;
+    }
 }

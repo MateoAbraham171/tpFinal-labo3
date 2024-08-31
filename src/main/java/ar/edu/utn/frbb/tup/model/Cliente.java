@@ -1,26 +1,30 @@
 package ar.edu.utn.frbb.tup.model;
 
-import ar.edu.utn.frbb.tup.controller.ClienteDto;
+import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
+import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class Cliente extends Persona{
+public class Cliente extends Persona {
 
     private TipoPersona tipoPersona;
     private String banco;
+    private String mail;
     private LocalDate fechaAlta;
     private Set<Cuenta> cuentas = new HashSet<>();
 
     public Cliente() {
         super();
+        this.fechaAlta = LocalDate.now();
     }
+
     public Cliente(ClienteDto clienteDto) {
-        super(clienteDto.getDni(), clienteDto.getApellido(), clienteDto.getNombre(), clienteDto.getFechaNacimiento());
+        super(clienteDto.getDni(), clienteDto.getApellido(), clienteDto.getNombre(), clienteDto.getFechaNacimiento(), clienteDto.getDireccion());
         fechaAlta = LocalDate.now();
+        this.mail = clienteDto.getMail();
+        tipoPersona = TipoPersona.fromString(clienteDto.getTipoPersona());
         banco = clienteDto.getBanco();
     }
 
@@ -52,28 +56,15 @@ public class Cliente extends Persona{
         return cuentas;
     }
 
-    public void addCuenta(Cuenta cuenta) {
+    public String getMail() { return mail; }
+
+    public void setMail(String mail) { this.mail = mail; }
+
+    public void setCuentas(Set<Cuenta> cuentas) {
+        this.cuentas = cuentas;
+    }
+
+    public void addCuenta(Cuenta cuenta) throws IllegalAccessException {
         this.cuentas.add(cuenta);
-        cuenta.setTitular(this);
-    }
-
-    public boolean tieneCuenta(TipoCuenta tipoCuenta, TipoMoneda moneda) {
-        for (Cuenta cuenta:
-                cuentas) {
-            if (tipoCuenta.equals(cuenta.getTipoCuenta()) && moneda.equals(cuenta.getMoneda())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "tipoPersona=" + tipoPersona +
-                ", banco='" + banco + '\'' +
-                ", fechaAlta=" + fechaAlta +
-                ", cuentas=" + cuentas +
-                '}';
     }
 }
