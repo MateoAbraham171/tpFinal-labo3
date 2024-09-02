@@ -4,7 +4,5 @@ ACLARACIONES:
 
 
 PENDIENTES:
-- TransferValidator (buscar una forma mejor de validar)
-- CuentaController (todo)
-- OperacionesController (todo)
+- testear los controller
 - Test (todos)

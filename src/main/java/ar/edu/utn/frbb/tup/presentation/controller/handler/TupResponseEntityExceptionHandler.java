@@ -70,7 +70,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
         error.setErrorCode(500);
-        error.setErrorMessage("Ocurrió un error inesperado. " + exceptionMessage);
+        error.setErrorMessage(exceptionMessage);
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

@@ -1,0 +1,2 @@
+DNI, Nombre, Apellido, Fecha nacimiento, Banco, Tipo Persona, Fecha alta, Mail, Direccion
+44195656,Mateo,Abraham,2001-12-18,Provincia,PERSONA_FISICA,2024-09-01,mateoabraham@gmail.com,Maestro piccioli 3130

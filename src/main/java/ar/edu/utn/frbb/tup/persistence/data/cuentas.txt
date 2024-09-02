@@ -1,0 +1,1 @@
+CBU, DNI titular, estado, saldo, fecha creacion, tipo de cuenta, tipo de moneda

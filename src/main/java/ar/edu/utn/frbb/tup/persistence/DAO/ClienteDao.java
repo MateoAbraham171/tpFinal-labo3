@@ -23,6 +23,7 @@ public class ClienteDao extends BaseDao<Cliente> {
     public void inicializarClientes() {
         String encabezado = "DNI, Nombre, Apellido, Fecha nacimiento, Banco, Tipo Persona, Fecha alta, Mail, Direccion";
         inicializarArchivo(encabezado, RUTA_ARCHIVO);
+        cuentaDao.inicializarCuentas();
     }
 
     public void saveCliente(Cliente cliente) {

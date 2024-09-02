@@ -15,8 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
-    //Decidi inyectar las dependencias mediante un constructor y no por @Autowired,
-    // ya que esto permite mejorar la testabilidad y facilitar la creación de pruebas unitarias.
     private ClienteControllerValidator clienteControllerValidator;
     private ClienteService clienteService;
 
