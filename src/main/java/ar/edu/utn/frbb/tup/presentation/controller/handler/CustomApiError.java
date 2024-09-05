@@ -2,13 +2,12 @@ package ar.edu.utn.frbb.tup.presentation.controller.handler;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+//A PESAR DE LAS WARNINGS, LOS GETTERS SE USAN AL CONVERTIR EL OBJETO A JSON
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomApiError {
     private Integer errorCode;
     private String errorMessage;
-
-
 
     public Integer getErrorCode() {
         return errorCode;
@@ -26,4 +25,3 @@ public class CustomApiError {
         this.errorMessage = errorMessage;
     }
 }
-

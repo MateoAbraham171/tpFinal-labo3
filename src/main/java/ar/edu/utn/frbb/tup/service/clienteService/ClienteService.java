@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.clienteService;
 
-import ar.edu.utn.frbb.tup.exception.ClientesException.*;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
@@ -10,24 +11,24 @@ import java.util.List;
 
 @Service
 public class ClienteService {
-    private final CrearCliente crearCliente;
-    private final EliminarCliente eliminarCliente;
-    private final ModificarCliente modificarCliente;
-    private final MostrarTodosClientes mostrarTodosClientes;
-    private final MostrarCliente mostrarCliente;
+    private final CreadorDeCliente creadorDeCliente;
+    private final EliminadorDeCliente eliminadorDeCliente;
+    private final ModificadorDeCliente modificadorDeCliente;
+    private final MostradorDeTodosClientes mostradorDeTodosClientes;
+    private final MostradosDeCliente mostradosDeCliente;
     private final ClienteDao clienteDao;
 
-    public ClienteService(CrearCliente crearCliente,
-                          EliminarCliente eliminarCliente,
-                          ModificarCliente modificarCliente,
-                          MostrarCliente mostrarCliente,
-                          MostrarTodosClientes mostrarTodosClientes,
+    public ClienteService(CreadorDeCliente creadorDeCliente,
+                          EliminadorDeCliente eliminadorDeCliente,
+                          ModificadorDeCliente modificadorDeCliente,
+                          MostradosDeCliente mostradosDeCliente,
+                          MostradorDeTodosClientes mostradorDeTodosClientes,
                           ClienteDao clienteDao) {
-        this.crearCliente = crearCliente;
-        this.eliminarCliente = eliminarCliente;
-        this.modificarCliente = modificarCliente;
-        this.mostrarCliente = mostrarCliente;
-        this.mostrarTodosClientes = mostrarTodosClientes;
+        this.creadorDeCliente = creadorDeCliente;
+        this.eliminadorDeCliente = eliminadorDeCliente;
+        this.modificadorDeCliente = modificadorDeCliente;
+        this.mostradosDeCliente = mostradosDeCliente;
+        this.mostradorDeTodosClientes = mostradorDeTodosClientes;
         this.clienteDao = clienteDao;
     }
 
@@ -35,23 +36,23 @@ public class ClienteService {
         clienteDao.inicializarClientes();
     }
 
-    public Cliente crearCliente(ClienteDto clienteDto) throws ClienteMenorException, FechaNacimientoInvalidaException, ClienteAlreadyExistsException {
-        return crearCliente.CrearCliente(clienteDto);
+    public Cliente crearCliente(ClienteDto clienteDto) throws ConflictException {
+        return creadorDeCliente.crearCliente(clienteDto);
     }
 
-    public Cliente eliminarCliente(long dni) throws ClienteNoEncontradoException {
-        return eliminarCliente.eliminarCliente(dni);
+    public Cliente eliminarCliente(long dni) throws NotFoundException {
+        return eliminadorDeCliente.eliminarCliente(dni);
     }
 
-    public Cliente modificarCliente(ClienteDto clienteDto) throws ClienteMenorException, ClienteNoEncontradoException {
-        return modificarCliente.modificarCliente(clienteDto);
+    public Cliente modificarCliente(ClienteDto clienteDto) throws NotFoundException {
+        return modificadorDeCliente.modificarCliente(clienteDto);
     }
 
-    public Cliente mostrarCliente(long dni) throws ClienteNoEncontradoException {
-        return mostrarCliente.mostrarCliente(dni);
+    public Cliente mostrarCliente(long dni) throws NotFoundException {
+        return mostradosDeCliente.mostrarCliente(dni);
     }
 
-    public List<Cliente> mostrarTodosClientes() throws NoExistenClientesException {
-        return mostrarTodosClientes.mostrarTodosClientes();
+    public List<Cliente> mostrarTodosClientes() throws NotFoundException {
+        return mostradorDeTodosClientes.mostrarTodosClientes();
     }
 }

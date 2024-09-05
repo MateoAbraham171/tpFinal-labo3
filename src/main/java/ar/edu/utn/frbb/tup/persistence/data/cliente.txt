@@ -1,2 +1,4 @@
-DNI, Nombre, Apellido, Fecha nacimiento, Banco, Tipo Persona, Fecha alta, Mail, Direccion
-44195656,Mateo,Abraham,2001-12-18,Provincia,PERSONA_FISICA,2024-09-01,mateoabraham@gmail.com,Maestro piccioli 3130
+DNI, Nombre, Apellido, Fecha nacimiento, Tipo Persona, Fecha alta, Mail, Direccion
+51754556,mateo,csdsdhira,2000-12-18,PERSONA_FISICA,2024-09-03,mateasdasda@gmail.com,avenida siempreviva 1222
+51754456,carlos,csdsdhira,2001-12-18,PERSONA_FISICA,2024-09-03,mateasdasda@gmail.com,Beruti 2222
+44696556,nacho,Chiara,1985-12-18,PERSONA_FISICA,2024-09-04,mateoabraham@gmail.com,Maestro piccioli 3130

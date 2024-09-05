@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +29,7 @@ public class MovimientoDao extends BaseDao<Movimiento> {
         mov.setTipoOperacion(tipoOperacion);
         mov.setMonto(monto);
 
-        String infoAGuardar = String.format("%d,%s,%s,%s,%.2f",
+        String infoAGuardar = "\n" + String.format("%d,%s,%s,%s,%.2f",
                 mov.getCBU(),
                 mov.getFechaOperacion(),
                 mov.getHoraOperacion(),
@@ -52,7 +51,7 @@ public class MovimientoDao extends BaseDao<Movimiento> {
             return reader.lines()
                     .map(linea -> linea.split(","))
                     .filter(datos -> Long.parseLong(datos[0]) == CBU)
-                    .map(this::parseDatosToObjet)
+                    .map(this::parseDatosToObject)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new UncheckedIOException("Error al leer el archivo de movimientos", e);
@@ -60,7 +59,7 @@ public class MovimientoDao extends BaseDao<Movimiento> {
     }
 
     @Override
-    public Movimiento parseDatosToObjet(String[] datos){
+    public Movimiento parseDatosToObject(String[] datos){
         Movimiento movimiento = new Movimiento();
 
         movimiento.setCBU(Long.parseLong(datos[0]));

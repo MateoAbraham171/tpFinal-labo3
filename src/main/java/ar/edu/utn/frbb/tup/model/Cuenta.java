@@ -4,6 +4,9 @@ import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.CuentaDto;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +52,10 @@ public class  Cuenta {
         return balance;
     }
     public Cuenta setBalance(double saldo) {
-        this.balance = saldo;
+        // Redondea el valor a 2 decimales usando BigDecimal
+        BigDecimal bd = BigDecimal.valueOf(saldo);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);  // Redondeo hacia el número más cercano
+        this.balance = bd.doubleValue();
         return this;
     }
 

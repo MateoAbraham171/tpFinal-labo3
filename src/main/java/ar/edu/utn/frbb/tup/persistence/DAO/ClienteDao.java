@@ -8,11 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.io.IOException;
 
 @Repository
 public class ClienteDao extends BaseDao<Cliente> {
-    private static final String RUTA_ARCHIVO = "src/main/java/ar/edu/utn/frbb/tup/persistence/data/cliente.txt";
+    private final String RUTA_ARCHIVO = "src/main/java/ar/edu/utn/frbb/tup/persistence/data/cliente.txt";
 
     private final CuentaDao cuentaDao;
 
@@ -21,24 +20,21 @@ public class ClienteDao extends BaseDao<Cliente> {
     }
 
     public void inicializarClientes() {
-        String encabezado = "DNI, Nombre, Apellido, Fecha nacimiento, Banco, Tipo Persona, Fecha alta, Mail, Direccion";
+        String encabezado = "DNI, Nombre, Apellido, Fecha nacimiento, Tipo Persona, Fecha alta, Mail, Direccion";
         inicializarArchivo(encabezado, RUTA_ARCHIVO);
-        cuentaDao.inicializarCuentas();
     }
 
     public void saveCliente(Cliente cliente) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(cliente.getDni()).append(",")
-                .append(cliente.getNombre()).append(",")
-                .append(cliente.getApellido()).append(",")
-                .append(cliente.getFechaNacimiento()).append(",")
-                .append(cliente.getBanco()).append(",")
-                .append(cliente.getTipoPersona()).append(",")
-                .append(cliente.getFechaAlta()).append(",")
-                .append(cliente.getMail()).append(",")
-                .append(cliente.getDireccion());
+        String sb = "\n" + cliente.getDni() + "," +
+                cliente.getNombre() + "," +
+                cliente.getApellido() + "," +
+                cliente.getFechaNacimiento() + "," +
+                cliente.getTipoPersona() + "," +
+                cliente.getFechaAlta() + "," +
+                cliente.getMail() + "," +
+                cliente.getDireccion();
 
-        saveInfo(sb.toString(), RUTA_ARCHIVO);
+        saveInfo(sb, RUTA_ARCHIVO);
     }
 
     public void deleteCliente(Long dni) {
@@ -77,18 +73,17 @@ public class ClienteDao extends BaseDao<Cliente> {
     }
 
     @Override
-    public Cliente parseDatosToObjet(String[] datos) {
+    public Cliente parseDatosToObject(String[] datos) {
         Cliente cliente = new Cliente();
 
         cliente.setDni(Long.parseLong(datos[0]));
         cliente.setNombre(datos[1]);
         cliente.setApellido(datos[2]);
         cliente.setFechaNacimiento(LocalDate.parse(datos[3]));
-        cliente.setBanco(datos[4]);
-        cliente.setTipoPersona(TipoPersona.valueOf(datos[5]));
-        cliente.setFechaAlta(LocalDate.parse(datos[6]));
-        cliente.setMail(datos[7]);
-        cliente.setDireccion(datos[8]);
+        cliente.setTipoPersona(TipoPersona.valueOf(datos[4]));
+        cliente.setFechaAlta(LocalDate.parse(datos[5]));
+        cliente.setMail(datos[6]);
+        cliente.setDireccion(datos[7]);
 
         return cliente;
     }
