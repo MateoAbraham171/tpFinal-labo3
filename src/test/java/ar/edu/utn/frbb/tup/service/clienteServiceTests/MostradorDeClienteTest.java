@@ -5,7 +5,7 @@ import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
-import ar.edu.utn.frbb.tup.service.AdminTest;
+import ar.edu.utn.frbb.tup.GeneradorDeObjetosParaTests;
 import ar.edu.utn.frbb.tup.service.clienteService.MostradorDeCliente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class MostradorDeClienteTest {
     private ClienteDto clienteDto;
-    private final AdminTest adminTest = new AdminTest();
+    private final GeneradorDeObjetosParaTests generadorDeObjetosParaTests = new GeneradorDeObjetosParaTests();
 
     @Mock private ClienteDao clienteDao;
 
@@ -28,23 +28,23 @@ public class MostradorDeClienteTest {
 
     @BeforeEach
     public void setUp() {
-        clienteDto = adminTest.getClienteDto("Mateo", 85876925L);
+        clienteDto = generadorDeObjetosParaTests.getClienteDto("Mateo", 85876925L);
     }
 
     @Test
-    public void testMostradorDeClienteSuccess() throws NotFoundException {
+    public void testMostrarClienteSuccess() throws NotFoundException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteEncontrado = mostradorDeCliente.mostrarCliente(clienteDto.getDni());
 
-        verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
-
-        assertEquals(clienteDto.getDni(), clienteEncontrado.getDni());
         assertNotNull(clienteEncontrado);
+        assertEquals(clienteDto.getDni(), clienteEncontrado.getDni());
+
+        verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
     }
 
     @Test
-    public void testMostradorDeClienteNotFound() {
+    public void testMostrarClienteNotFound() {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
 
         assertThrows(ClienteNoEncontradoException.class, () -> mostradorDeCliente.mostrarCliente(clienteDto.getDni()));

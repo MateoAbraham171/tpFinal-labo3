@@ -18,10 +18,6 @@ public class ClienteControllerValidator {
     private static final LocalDate FECHA_NACIMIENTO_MINIMA = LocalDate.of(1900, 1, 1);
 
     public void validateCliente(ClienteDto clienteDto) throws BadRequestException, ConflictException {
-        validateAllData(clienteDto);
-    }
-
-    private void validateAllData(ClienteDto clienteDto) throws BadRequestException, ConflictException {
         validateNombre(clienteDto.getNombre());
         validateApellido(clienteDto.getApellido());
         validateDireccion(clienteDto.getDireccion());
@@ -31,7 +27,6 @@ public class ClienteControllerValidator {
         validateDni(clienteDto.getDni());
     }
 
-    // Valida que el nombre no sea nulo ni esté vacío.
     private void validateNombre(String nombre) throws BadRequestException {
         if (nombre == null || nombre.isEmpty()) {
             throw new CampoVacioException("nombre");
@@ -39,7 +34,6 @@ public class ClienteControllerValidator {
         validateSoloLetras(nombre, "nombre");
     }
 
-    // Valida que el apellido no sea nulo ni esté vacío.
     private void validateApellido(String apellido) throws BadRequestException {
         if (apellido == null || apellido.isEmpty()) {
             throw new CampoVacioException("apellido");
@@ -47,7 +41,6 @@ public class ClienteControllerValidator {
         validateSoloLetras(apellido, "apellido");
     }
 
-    //Valida que la direccion no sea nula, no este vacio y que contenga nombre de calle y altura.
     private void validateDireccion(String direccion) throws BadRequestException {
         if (direccion == null || direccion.isEmpty()) {
             throw new CampoVacioException("direccion");
@@ -58,13 +51,13 @@ public class ClienteControllerValidator {
 
         // Verificamos que haya al menos dos partes
         if (partes.length < 2) {
-            throw new IllegalArgumentException("Error: La dirección debe contener un nombre de calle y un número");
+            throw new InputInvalidoException("Error: La dirección debe contener un nombre de calle y un número");
         }
 
         // Verificamos que la última parte sea numérica (número de la calle)
         String numeroCalle = partes[partes.length - 1];
         if (!numeroCalle.matches("\\d+")) {
-            throw new IllegalArgumentException("Error: La dirección debe terminar con un número válido");
+            throw new InputInvalidoException("Error: La dirección debe terminar con un número válido");
         }
     }
 
@@ -79,7 +72,7 @@ public class ClienteControllerValidator {
     }
 
     //Valida que tipo de persona no este vacio y sea valido
-    public void validateTipoPersona(String tipoPersona) throws BadRequestException {
+    private void validateTipoPersona(String tipoPersona) throws BadRequestException {
         try {
             TipoPersona.fromString(tipoPersona);
         } catch (IllegalArgumentException ex) {
@@ -119,7 +112,7 @@ public class ClienteControllerValidator {
         }
     }
 
-    public void validateSoloLetras(String str, String mensaje) throws BadRequestException {
+    private void validateSoloLetras(String str, String mensaje) throws BadRequestException {
         if (!str.matches("[a-zA-Z \\-']+")) {
             throw new InputInvalidoException("Error: El formato del " + mensaje + " es invalido");
         }

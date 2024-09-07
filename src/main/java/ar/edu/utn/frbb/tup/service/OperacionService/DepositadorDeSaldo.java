@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.service.OperacioneService;
+package ar.edu.utn.frbb.tup.service.OperacionService;
 
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaDeBajaException;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaNoEncontradaException;

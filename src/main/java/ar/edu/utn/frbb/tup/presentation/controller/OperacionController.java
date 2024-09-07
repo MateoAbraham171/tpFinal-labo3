@@ -8,7 +8,7 @@ import ar.edu.utn.frbb.tup.model.Operacion;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.MontoDeOperacionDto;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.TransferDto;
 import ar.edu.utn.frbb.tup.presentation.validator.TransferValidator;
-import ar.edu.utn.frbb.tup.service.OperacioneService.OperacionService;
+import ar.edu.utn.frbb.tup.service.OperacionService.OperacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/operaciones")
 
-public class OperacionesController {
+public class OperacionController {
     private final OperacionService operacionService;
     private final TransferValidator transferValidator;
 
-    public OperacionesController(OperacionService operacionService, TransferValidator transferValidator){
+    public OperacionController(OperacionService operacionService, TransferValidator transferValidator){
         this.operacionService = operacionService;
         operacionService.inicializarMovimientos();
         this.transferValidator = transferValidator;

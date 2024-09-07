@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.service.OperacioneService;
+package ar.edu.utn.frbb.tup.service.OperacionService;
 
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;

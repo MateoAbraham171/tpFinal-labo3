@@ -7,18 +7,17 @@ import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.DAO.CuentaDao;
 import ar.edu.utn.frbb.tup.persistence.DAO.MovimientoDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EliminadorDeCuentas {
     private final ClienteDao clienteDao;
     private final CuentaDao cuentaDao;
-    private final MovimientoDao movimientosDao;
 
-    public EliminadorDeCuentas(ClienteDao clienteDao, CuentaDao cuentaDao, MovimientoDao movimientoDao) {
+    public EliminadorDeCuentas(ClienteDao clienteDao, CuentaDao cuentaDao) {
         this.clienteDao = clienteDao;
         this.cuentaDao = cuentaDao;
-        this.movimientosDao = movimientoDao;
     }
 
     public Cuenta eliminarCuenta(long dni, long cbu) throws NotFoundException {
@@ -32,7 +31,7 @@ public class EliminadorDeCuentas {
         }
 
         cuentaDao.deleteCuenta(cbu);
-        movimientosDao.deleteMovimiento(cbu);
+        new MovimientoDao().deleteMovimiento(cbu);
 
         return cuenta;
     }

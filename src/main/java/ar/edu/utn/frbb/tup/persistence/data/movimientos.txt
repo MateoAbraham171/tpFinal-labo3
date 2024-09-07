@@ -6,29 +6,13 @@ CBU Origen, Fecha de Operacion, Hora de Operacion, Tipo de Operacion, Monto
 886003,2024-09-04,13:29:06,Retiro,931,00
 886003,2024-09-04,13:31:40,Deposito,2000,00
 886003,2024-09-04,17:09:57,Transferencia saliente,200,00
-827905,2024-09-04,17:09:57,Transferencia entrante,200,00
-827905,2024-09-04,17:12:04,Transferencia saliente,200,00
 886003,2024-09-04,17:12:04,Transferencia entrante,200,00
 886003,2024-09-04,17:13:34,Transferencia saliente,200,00
-827905,2024-09-04,17:13:34,Transferencia entrante,200,00
 886003,2024-09-04,17:14:01,Transferencia saliente,200,00
 886003,2024-09-04,17:24:12,Retiro,600,00
-827905,2024-09-04,17:29:56,Deposito,1000000,00
-827905,2024-09-04,17:36:10,Transferencia saliente,1000000,00
 886003,2024-09-04,17:36:10,Transferencia entrante,1000000,00
 886003,2024-09-04,17:37:25,Transferencia saliente,1000000,00
 135009,2024-09-04,17:37:25,Transferencia entrante,1000000,00
 886003,2024-09-04,17:38:35,Transferencia saliente,1020001,02
 135009,2024-09-04,17:38:35,Transferencia entrante,1000001,00
 886003,2024-09-04,17:41:05,Transferencia saliente,100,00
-160950,2024-09-04,17:43:18,Deposito,100000,00
-160950,2024-09-04,17:44:09,Transferencia saliente,1000,00
-260551,2024-09-04,17:44:09,Transferencia entrante,1000,00
-160950,2024-09-04,17:44:32,Transferencia saliente,5000,00
-260551,2024-09-04,17:44:32,Transferencia entrante,5000,00
-160950,2024-09-04,17:44:36,Transferencia saliente,5026,01
-260551,2024-09-04,17:44:36,Transferencia entrante,5001,00
-160950,2024-09-04,17:53:05,Transferencia saliente,5026,01
-260551,2024-09-04,17:53:05,Transferencia entrante,5001,00
-160950,2024-09-04,17:53:49,Transferencia saliente,50,00
-260551,2024-09-04,17:53:49,Transferencia entrante,50,00

@@ -9,7 +9,7 @@ import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.DAO.CuentaDao;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
-import ar.edu.utn.frbb.tup.service.AdminTest;
+import ar.edu.utn.frbb.tup.GeneradorDeObjetosParaTests;
 import ar.edu.utn.frbb.tup.service.clienteService.EliminadorDeCliente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class EliminadorDeClienteTest {
     private ClienteDto clienteDto;
-    private final AdminTest adminTest = new AdminTest();
+    private final GeneradorDeObjetosParaTests generadorDeObjetosParaTests = new GeneradorDeObjetosParaTests();
 
     @Mock private ClienteDao clienteDao;
     @Mock private CuentaDao cuentaDao;
@@ -36,47 +36,50 @@ public class EliminadorDeClienteTest {
 
     @BeforeEach
     public void setUp() {
-        clienteDto = adminTest.getClienteDto("Mateo", 85876925L);
+        clienteDto = generadorDeObjetosParaTests.getClienteDto("Mateo", 85876925L);
     }
 
     @Test
-    public void testEliminadorDeClienteSinCuentasSuccess() throws NotFoundException {
+    public void testEliminarClienteSinCuentasSuccess() throws NotFoundException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteEliminado = eliminadorDeCliente.eliminarCliente(clienteDto.getDni());
+
+        assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
+        assertNotNull(clienteEliminado);
 
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(1)).deleteCliente(clienteDto.getDni());
-
-        assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
-        assertNotNull(clienteEliminado);
     }
 
-    //esta bien testear tanto en un solo test???
     @Test
-    public void testEliminadorDeClienteConCuentasSuccess() throws NotFoundException {
-        Cuenta cuenta = adminTest.getCuenta(clienteDto.getDni(), TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.PESOS);
+    public void testEliminarClienteConCuentasSuccess() throws NotFoundException {
+        Cuenta cuenta1 = generadorDeObjetosParaTests.getCuenta(clienteDto.getDni(), TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.PESOS);
+        Cuenta cuenta2 = generadorDeObjetosParaTests.getCuenta(clienteDto.getDni(), TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES).setCBU(234567);
         List<Long> clienteCBUs = new ArrayList<>();
+        clienteCBUs.add(cuenta1.getCBU());
+        clienteCBUs.add(cuenta2.getCBU());
 
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
         when(cuentaDao.getCBUsVinculadosPorDni(clienteDto.getDni())).thenReturn(clienteCBUs);
-
-        clienteCBUs.add(cuenta.getCBU());
-        when(cuentaDao.findCuentaDelCliente(cuenta.getCBU(), clienteDto.getDni())).thenReturn(cuenta);
+        when(cuentaDao.findCuentaDelCliente(cuenta1.getCBU(), clienteDto.getDni())).thenReturn(cuenta1);
+        when(cuentaDao.findCuentaDelCliente(cuenta2.getCBU(), clienteDto.getDni())).thenReturn(cuenta2);
 
         Cliente clienteEliminado = eliminadorDeCliente.eliminarCliente(clienteDto.getDni());
+
         assertNotNull(clienteEliminado);
         assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
 
-        //el metodo findCliente se llama dos veces, al verificar que un cliente no existe y
-        //al momento de borrar una cuenta
-        verify(clienteDao, times(2)).findCliente(clienteDto.getDni());
+        //el metodo findCliente se llama tres veces, al verificar que el cliente si existe y al momento de borrar cada cuenta
+        verify(clienteDao, times(3)).findCliente(clienteDto.getDni());
         verify(cuentaDao, times(1)).getCBUsVinculadosPorDni(clienteDto.getDni());
+        verify(cuentaDao, times(1)).deleteCuenta(cuenta1.getCBU());
+        verify(cuentaDao, times(1)).deleteCuenta(cuenta2.getCBU());
         verify(clienteDao, times(1)).deleteCliente(clienteDto.getDni());
     }
 
     @Test
-    public void testEliminadorDeClienteNotFound() {
+    public void testEliminarClienteNotFound() {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
 
         assertThrows(ClienteNoEncontradoException.class, () -> eliminadorDeCliente.eliminarCliente(clienteDto.getDni()));

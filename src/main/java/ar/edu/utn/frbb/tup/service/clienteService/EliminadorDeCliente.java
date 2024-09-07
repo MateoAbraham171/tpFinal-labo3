@@ -15,12 +15,10 @@ import java.util.List;
 public class EliminadorDeCliente {
     private final ClienteDao clienteDao;
     private final CuentaDao cuentaDao;
-    private final MovimientoDao movimientoDao;
 
-    public EliminadorDeCliente(ClienteDao clienteDao, CuentaDao cuentaDao, MovimientoDao movimientoDao){
+    public EliminadorDeCliente(ClienteDao clienteDao, CuentaDao cuentaDao){
         this.clienteDao = clienteDao;
         this.cuentaDao = cuentaDao;
-        this.movimientoDao = movimientoDao;
     }
 
     public Cliente eliminarCliente(long dni) throws NotFoundException {
@@ -30,9 +28,9 @@ public class EliminadorDeCliente {
             throw new ClienteNoEncontradoException(dni);
         }
 
-        List<Long> cuentasParaEliminar = cuentaDao.getCBUsVinculadosPorDni(dni);
-        EliminadorDeCuentas eliminadorDeCuentas = new EliminadorDeCuentas(clienteDao, cuentaDao, movimientoDao);
-        for (long cuenta : cuentasParaEliminar)
+        List<Long> cbusDeCuentasParaEliminar = cuentaDao.getCBUsVinculadosPorDni(dni);
+        EliminadorDeCuentas eliminadorDeCuentas = new EliminadorDeCuentas(clienteDao, cuentaDao);
+        for (long cuenta : cbusDeCuentasParaEliminar)
             eliminadorDeCuentas.eliminarCuenta(dni, cuenta);
 
         clienteDao.deleteCliente(dni);

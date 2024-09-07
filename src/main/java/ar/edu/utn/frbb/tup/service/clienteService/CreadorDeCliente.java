@@ -14,11 +14,10 @@ public class CreadorDeCliente {
     public CreadorDeCliente(ClienteDao clienteDao) { this.clienteDao = clienteDao; }
 
     public Cliente crearCliente(ClienteDto clienteDto) throws ConflictException {
-        Cliente cliente = new Cliente(clienteDto);
-
-        if (clienteDao.findCliente(cliente.getDni()) != null)
+        if (clienteDao.findCliente(clienteDto.getDni()) != null)
             throw new ClienteAlreadyExistsException();
 
+        Cliente cliente = new Cliente(clienteDto);
         clienteDao.saveCliente(cliente);
 
         return cliente;

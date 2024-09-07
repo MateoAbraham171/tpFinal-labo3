@@ -7,7 +7,7 @@ import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
-import ar.edu.utn.frbb.tup.service.AdminTest;
+import ar.edu.utn.frbb.tup.GeneradorDeObjetosParaTests;
 import ar.edu.utn.frbb.tup.service.clienteService.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ClienteServiceTest {
     private ClienteDto clienteDto;
-    private final AdminTest adminTest = new AdminTest();
+    private final GeneradorDeObjetosParaTests generadorDeObjetosParaTests = new GeneradorDeObjetosParaTests();
 
     @Mock private CreadorDeCliente creadorDeCliente;
     @Mock private EliminadorDeCliente eliminadorDeCliente;
@@ -35,11 +37,11 @@ public class ClienteServiceTest {
 
     @BeforeEach
     public void setUp() {
-        clienteDto = adminTest.getClienteDto("Mateo", 85876925L);
+        clienteDto = generadorDeObjetosParaTests.getClienteDto("Mateo", 85876925L);
     }
 
     @Test
-    public void testCrearClienteSuccess() throws ConflictException {
+    public void testCrearClienteServiceSuccess() throws ConflictException {
         Cliente cliente = new Cliente(clienteDto);
         when(creadorDeCliente.crearCliente(clienteDto)).thenReturn(cliente);
 
@@ -47,12 +49,11 @@ public class ClienteServiceTest {
 
         assertNotNull(clienteCreado);
         assertEquals(cliente, clienteCreado);
-        verify(creadorDeCliente).crearCliente(clienteDto);
+        verify(creadorDeCliente, times(1)).crearCliente(clienteDto);
     }
 
-    //en este tengo mis dudas, no se si esta del todo bien
     @Test
-    public void testCrearClienteFail() throws ConflictException {
+    public void testCrearClienteServiceFail() throws ConflictException {
         when(creadorDeCliente.crearCliente(clienteDto)).thenThrow(new ClienteAlreadyExistsException());
 
         assertThrows(ClienteAlreadyExistsException.class, () -> clienteService.crearCliente(clienteDto));
@@ -61,18 +62,19 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testEliminarClienteSuccess() throws NotFoundException {
+    public void testEliminarClienteServiceSuccess() throws NotFoundException {
         when(eliminadorDeCliente.eliminarCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteEliminado = clienteService.eliminarCliente(clienteDto.getDni());
 
-        verify(eliminadorDeCliente, times(1)).eliminarCliente(clienteDto.getDni());
         assertNotNull(clienteEliminado);
         assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
+
+        verify(eliminadorDeCliente, times(1)).eliminarCliente(clienteDto.getDni());
     }
 
     @Test
-    public void testEliminarClienteFail() throws NotFoundException {
+    public void testEliminarClienteServiceFail() throws NotFoundException {
         when(eliminadorDeCliente.eliminarCliente(clienteDto.getDni())).thenThrow(new ClienteNoEncontradoException(clienteDto.getDni()));
 
         assertThrows(NotFoundException.class, () -> clienteService.eliminarCliente(clienteDto.getDni()));
@@ -81,19 +83,19 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testModificarCliente() throws NotFoundException {
-        Cliente cliente = new Cliente(clienteDto);
-        when(modificadorDeCliente.modificarCliente(clienteDto)).thenReturn(cliente);
+    public void testModificarClienteServiceSuccess() throws NotFoundException {
+        when(modificadorDeCliente.modificarCliente(clienteDto)).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteModificado = clienteService.modificarCliente(clienteDto);
 
-        verify(modificadorDeCliente, times(1)).modificarCliente(clienteDto);
         assertNotNull(clienteModificado);
         assertEquals(clienteDto.getDni(), clienteModificado.getDni());
+
+        verify(modificadorDeCliente, times(1)).modificarCliente(clienteDto);
     }
 
     @Test
-    public void testModificarClienteFail() throws NotFoundException {
+    public void testModificarClienteServiceFail() throws NotFoundException {
         when(modificadorDeCliente.modificarCliente(clienteDto)).thenThrow(new ClienteNoEncontradoException(clienteDto.getDni()));
 
         assertThrows(ClienteNoEncontradoException.class, () -> clienteService.modificarCliente(clienteDto));
@@ -102,19 +104,19 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testMostrarClienteSucces() throws NotFoundException {
-        Cliente cliente = new Cliente(clienteDto);
-        when(mostradorDeCliente.mostrarCliente(clienteDto.getDni())).thenReturn(cliente);
+    public void testMostrarClienteServiceSuccess() throws NotFoundException {
+        when(mostradorDeCliente.mostrarCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteMostrado = clienteService.mostrarCliente(clienteDto.getDni());
 
-        verify(mostradorDeCliente, times(1)).mostrarCliente(clienteDto.getDni());
         assertNotNull(clienteMostrado);
         assertEquals(clienteDto.getDni(), clienteMostrado.getDni());
+
+        verify(mostradorDeCliente, times(1)).mostrarCliente(clienteDto.getDni());
     }
 
     @Test
-    public void testMostrarClienteFail() throws NotFoundException {
+    public void testMostrarClienteServiceFail() throws NotFoundException {
         when(mostradorDeCliente.mostrarCliente(clienteDto.getDni())).thenThrow(new ClienteNoEncontradoException(clienteDto.getDni()));
 
         assertThrows(ClienteNoEncontradoException.class, () -> clienteService.mostrarCliente(clienteDto.getDni()));
@@ -123,15 +125,20 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testMostrarTodosClientesSuccess() throws NotFoundException {
-        when(mostradorDeTodosClientes.mostrarTodosClientes()).thenReturn(adminTest.getListaDeClientes());
+    public void testMostrarTodosClientesServiceSuccess() throws NotFoundException {
+        List<Cliente> listaGenerada = generadorDeObjetosParaTests.getListaDeClientes();
+        when(mostradorDeTodosClientes.mostrarTodosClientes()).thenReturn(listaGenerada);
 
-        assertNotNull(clienteService.mostrarTodosClientes());
+        List<Cliente> listaClientesObtenida = clienteService.mostrarTodosClientes();
+
+        assertNotNull(listaClientesObtenida);
+        assertEquals(listaClientesObtenida, listaGenerada);
+
         verify(mostradorDeTodosClientes, times(1)).mostrarTodosClientes();
     }
 
     @Test
-    public void testMostrarTodosClientesFail() throws NotFoundException {
+    public void testMostrarTodosClientesServiceFail() throws NotFoundException {
         when(mostradorDeTodosClientes.mostrarTodosClientes()).thenThrow(new NoExistenClientesException());
 
         assertThrows(NoExistenClientesException.class, () -> clienteService.mostrarTodosClientes());

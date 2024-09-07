@@ -1,4 +1,4 @@
-package ar.edu.utn.frbb.tup.service;
+package ar.edu.utn.frbb.tup;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
@@ -14,7 +14,7 @@ import java.util.List;
 
 //clase creada para simular la creacion de los objetos necesarios
 //para la ejecucion de los test
-public class AdminTest {
+public class GeneradorDeObjetosParaTests {
 
     public Cliente getCliente(String nombre, long dni) {
         Cliente cliente = new Cliente();
@@ -68,9 +68,5 @@ public class AdminTest {
         lista.add(getCliente("Juan", 12345678L));
 
         return lista;
-    }
-
-    public List<Cliente> getListaDeClientesVacia() {
-        return new ArrayList<>();
     }
 }
