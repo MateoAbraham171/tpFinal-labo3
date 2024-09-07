@@ -32,7 +32,7 @@ public class CreadorDeClienteTest {
     }
 
     @Test
-    public void testCrearClienteSuccess() throws ConflictException {
+    public void testCreadorDeClienteSuccess() throws ConflictException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
 
         Cliente clienteResultado = creadorDeCliente.crearCliente(clienteDto);

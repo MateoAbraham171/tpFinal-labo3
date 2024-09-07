@@ -7,10 +7,10 @@ import ar.edu.utn.frbb.tup.model.Cliente;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MostradosDeCliente {
+public class MostradorDeCliente {
     private final ClienteDao clienteDao;
 
-    public MostradosDeCliente(ClienteDao clienteDao) {
+    public MostradorDeCliente(ClienteDao clienteDao) {
         this.clienteDao = clienteDao;
     }
 

@@ -43,10 +43,10 @@ public class OperacionesController {
         return new ResponseEntity<>(operacionService.deposito(cbu, monto), HttpStatus.OK);
     }
 
-        @PutMapping("/retiro/{cbu}")
-        public ResponseEntity<Operacion> putRetiro(@PathVariable long cbu, @RequestBody MontoDeOperacionDto monto) throws NotFoundException, ConflictException {
-            return new ResponseEntity<>(operacionService.retiro(cbu, monto), HttpStatus.OK);
-        }
+    @PutMapping("/retiro/{cbu}")
+    public ResponseEntity<Operacion> putRetiro(@PathVariable long cbu, @RequestBody MontoDeOperacionDto monto) throws NotFoundException, ConflictException {
+        return new ResponseEntity<>(operacionService.retiro(cbu, monto), HttpStatus.OK);
+    }
 
     @PostMapping("/transferencia")
     public ResponseEntity<Operacion> postTransferencia(@RequestBody TransferDto transferDto) throws BadRequestException, NotFoundException, ConflictException {

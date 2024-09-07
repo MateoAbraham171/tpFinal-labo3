@@ -60,20 +60,19 @@ public class CuentaDao extends BaseDao<Cuenta> {
         }
     }
 
-//    public List<Long> getRelacionesDni(long dni) {
-//        try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
-//            // Saltamos la primera línea (encabezado)
-//            reader.readLine();
-//
-//            return reader.lines()
-//                    .map(linea -> linea.split(","))
-//                    .filter(datos -> Long.parseLong(datos[1]) == dni)
-//                    .map(datos -> Long.parseLong(datos[0]))
-//                    .collect(Collectors.toList());
-//        } catch (IOException e) {
-//            throw new UncheckedIOException("Error al leer el archivo de relaciones", e);
-//        }
-//    }
+    public List<Long> getCBUsVinculadosPorDni(long dni) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
+            reader.readLine();
+
+            return reader.lines()
+                    .map(linea -> linea.split(","))
+                    .filter(datos -> Long.parseLong(datos[1]) == dni)
+                    .map(datos -> Long.parseLong(datos[0]))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new UncheckedIOException("Error al leer el archivo de relaciones", e);
+        }
+    }
 
     public Set<Cuenta> findAllCuentasDelCliente(long dni) {
         try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
@@ -91,47 +90,6 @@ public class CuentaDao extends BaseDao<Cuenta> {
     }
 
     public void updateCuenta(Cuenta cuentaActualizada) {
-//        List<String> cuentasActualizadas = new ArrayList<>();
-//
-//        try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
-//            String encabezado = reader.readLine(); // Leer el encabezado
-//            cuentasActualizadas.add(encabezado); // Agregar el encabezado al principio
-//
-//            String linea;
-//            while ((linea = reader.readLine()) != null) {
-//                String[] datos = linea.split(",");
-//                long cbu = Long.parseLong(datos[0]);
-//
-//                if (cbu == cuentaActualizada.getCBU()) {
-//                    // Actualizar la cuenta si el CBU coincide
-//                    StringBuilder sb = new StringBuilder();
-//                    sb.append(cuentaActualizada.getCBU()).append(",")
-//                            .append(cuentaActualizada.getDniTitular()).append(",")
-//                            .append(cuentaActualizada.getEstado()).append(",")
-//                            .append(cuentaActualizada.getBalance()).append(",")
-//                            .append(cuentaActualizada.getFechaCreacion()).append(",")
-//                            .append(cuentaActualizada.getTipoCuenta()).append(",")
-//                            .append(cuentaActualizada.getMoneda());
-//                    cuentasActualizadas.add(sb.toString());
-//                } else {
-//                    // Mantener la línea original si no es la cuenta a actualizar
-//                    cuentasActualizadas.add(linea);
-//                }
-//            }
-//        } catch (IOException e) {
-//            throw new UncheckedIOException("Error al leer el archivo de cuentas", e);
-//        }
-//
-//        // Escribir las cuentas actualizadas de vuelta al archivo
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(RUTA_ARCHIVO))) {
-//            for (String cuentaLinea : cuentasActualizadas) {
-//                writer.write(cuentaLinea);
-//                writer.newLine();
-//            }
-//        } catch (IOException e) {
-//            throw new UncheckedIOException("Error al escribir en el archivo de cuentas", e);
-//        }
-        //esta forma de actualizar me parecio mas facil xD
         deleteCuenta(cuentaActualizada.getCBU());
         saveCuenta(cuentaActualizada);
     }

@@ -28,7 +28,7 @@ public class EliminadorDeCuentas {
 
         Cuenta cuenta = cuentaDao.findCuentaDelCliente(cbu, dni);
         if (cuenta == null) {
-            throw new CuentaNoEncontradaException(dni);
+            throw new CuentaNoEncontradaException(cbu);
         }
 
         cuentaDao.deleteCuenta(cbu);

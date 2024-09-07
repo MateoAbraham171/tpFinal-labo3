@@ -9,6 +9,8 @@ import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.CuentaDto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 //clase creada para simular la creacion de los objetos necesarios
 //para la ejecucion de los test
@@ -40,12 +42,13 @@ public class AdminTest {
         return clienteDto;
     }
 
-    public Cuenta getCuenta(long dniTitular, TipoCuenta tipoCuenta, TipoMoneda tipoMoneda, double balance) {
+    public Cuenta getCuenta(long dniTitular, TipoCuenta tipoCuenta, TipoMoneda tipoMoneda) {
         Cuenta cuenta = new Cuenta();
         cuenta.setDniTitular(dniTitular);
         cuenta.setTipoCuenta(tipoCuenta);
         cuenta.setMoneda(tipoMoneda);
-        cuenta.setBalance(balance);
+        cuenta.setCBU(123456);
+        cuenta.setBalance(100000);
 
         return cuenta;
     }
@@ -57,5 +60,17 @@ public class AdminTest {
         cuentaDto.setTipoMoneda(tipoMoneda.toString());
 
         return cuentaDto;
+    }
+
+    public List<Cliente> getListaDeClientes() {
+        List<Cliente> lista = new ArrayList<>();
+        lista.add(getCliente("Mateo", 85876925L));
+        lista.add(getCliente("Juan", 12345678L));
+
+        return lista;
+    }
+
+    public List<Cliente> getListaDeClientesVacia() {
+        return new ArrayList<>();
     }
 }

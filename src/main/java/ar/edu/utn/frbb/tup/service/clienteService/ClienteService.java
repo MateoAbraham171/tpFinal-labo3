@@ -15,19 +15,19 @@ public class ClienteService {
     private final EliminadorDeCliente eliminadorDeCliente;
     private final ModificadorDeCliente modificadorDeCliente;
     private final MostradorDeTodosClientes mostradorDeTodosClientes;
-    private final MostradosDeCliente mostradosDeCliente;
+    private final MostradorDeCliente mostradorDeCliente;
     private final ClienteDao clienteDao;
 
     public ClienteService(CreadorDeCliente creadorDeCliente,
                           EliminadorDeCliente eliminadorDeCliente,
                           ModificadorDeCliente modificadorDeCliente,
-                          MostradosDeCliente mostradosDeCliente,
+                          MostradorDeCliente mostradorDeCliente,
                           MostradorDeTodosClientes mostradorDeTodosClientes,
                           ClienteDao clienteDao) {
         this.creadorDeCliente = creadorDeCliente;
         this.eliminadorDeCliente = eliminadorDeCliente;
         this.modificadorDeCliente = modificadorDeCliente;
-        this.mostradosDeCliente = mostradosDeCliente;
+        this.mostradorDeCliente = mostradorDeCliente;
         this.mostradorDeTodosClientes = mostradorDeTodosClientes;
         this.clienteDao = clienteDao;
     }
@@ -49,7 +49,7 @@ public class ClienteService {
     }
 
     public Cliente mostrarCliente(long dni) throws NotFoundException {
-        return mostradosDeCliente.mostrarCliente(dni);
+        return mostradorDeCliente.mostrarCliente(dni);
     }
 
     public List<Cliente> mostrarTodosClientes() throws NotFoundException {
