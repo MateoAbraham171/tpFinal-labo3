@@ -43,12 +43,9 @@ public class EliminadorDeClienteTest {
     @Test
     public void testEliminarClienteSinCuentasSuccess() throws NotFoundException, BadRequestException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
-
         Cliente clienteEliminado = eliminadorDeCliente.eliminarCliente(clienteDto.getDni());
-
         assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
         assertNotNull(clienteEliminado);
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(1)).deleteCliente(clienteDto.getDni());
     }
@@ -60,18 +57,13 @@ public class EliminadorDeClienteTest {
         List<Long> clienteCBUs = new ArrayList<>();
         clienteCBUs.add(cuenta1.getCBU());
         clienteCBUs.add(cuenta2.getCBU());
-
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
         when(cuentaDao.getCBUsVinculadosPorDni(clienteDto.getDni())).thenReturn(clienteCBUs);
         when(cuentaDao.findCuentaDelCliente(cuenta1.getCBU(), clienteDto.getDni())).thenReturn(cuenta1);
         when(cuentaDao.findCuentaDelCliente(cuenta2.getCBU(), clienteDto.getDni())).thenReturn(cuenta2);
-
         Cliente clienteEliminado = eliminadorDeCliente.eliminarCliente(clienteDto.getDni());
-
         assertNotNull(clienteEliminado);
         assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
-
-        //el metodo findCliente se llama tres veces, al verificar que el cliente si existe y al momento de borrar cada cuenta
         verify(clienteDao, times(3)).findCliente(clienteDto.getDni());
         verify(cuentaDao, times(1)).getCBUsVinculadosPorDni(clienteDto.getDni());
         verify(cuentaDao, times(1)).deleteCuenta(cuenta1.getCBU());
@@ -82,9 +74,7 @@ public class EliminadorDeClienteTest {
     @Test
     public void testEliminarClienteNotFound() {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
-
         assertThrows(ClienteNoEncontradoException.class, () -> eliminadorDeCliente.eliminarCliente(clienteDto.getDni()));
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(0)).deleteCliente(clienteDto.getDni());
     }

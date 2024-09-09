@@ -44,15 +44,13 @@ public class ClienteDao extends BaseDao<Cliente> {
     public Cliente findCliente(Long dni) {
         Cliente cliente = findInfo(dni, RUTA_ARCHIVO);
 
-        if (cliente == null) {
+        if (cliente == null)
             return null;
-        }
 
         Set<Cuenta> cuentas = cuentaDao.findAllCuentasDelCliente(dni);
 
-        if (!cuentas.isEmpty()) {
+        if (!cuentas.isEmpty())
             cliente.setCuentas(cuentas);
-        }
 
         return cliente;
     }
@@ -64,7 +62,6 @@ public class ClienteDao extends BaseDao<Cliente> {
         if (!cuentas.isEmpty()) {
             Map<Long, Set<Cuenta>> cuentasPorCliente = cuentas.stream()
                     .collect(Collectors.groupingBy(Cuenta::getDniTitular, Collectors.toSet()));
-
             clientes.forEach(cliente ->
                     cliente.setCuentas(cuentasPorCliente.getOrDefault(cliente.getDni(), new HashSet<>()))
             );

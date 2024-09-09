@@ -24,15 +24,13 @@ public class MostradorDeCuenta {
     public Set<Cuenta> mostrarCuenta(long dni) throws NotFoundException {
         Cliente cliente = clienteDao.findCliente(dni);
 
-        if (cliente == null) {
+        if (cliente == null)
             throw new ClienteNoEncontradoException(dni);
-        }
 
         Set<Cuenta> cuentas = cuentaDao.findAllCuentasDelCliente(dni);
 
-        if (cuentas.isEmpty()) {
+        if (cuentas.isEmpty())
             throw new NoHayCuentasException(dni);
-        }
 
         return cuentas;
     }

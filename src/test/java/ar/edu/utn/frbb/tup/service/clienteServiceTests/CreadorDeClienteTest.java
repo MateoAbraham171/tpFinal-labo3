@@ -35,12 +35,9 @@ public class CreadorDeClienteTest {
     @Test
     public void testCrearClienteSuccess() throws ConflictException, BadRequestException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
-
         Cliente clienteCreado = creadorDeCliente.crearCliente(clienteDto);
-
         assertNotNull(clienteCreado);
         assertEquals(clienteDto.getDni(), clienteCreado.getDni());
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(1)).saveCliente(clienteCreado);
 
@@ -49,9 +46,7 @@ public class CreadorDeClienteTest {
     @Test
     public void testClienteAlreadyExistsException() {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente());
-
         assertThrows(ClienteAlreadyExistsException.class, () -> creadorDeCliente.crearCliente(clienteDto));
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(0)).saveCliente(any(Cliente.class));
     }

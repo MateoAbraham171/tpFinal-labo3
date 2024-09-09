@@ -20,14 +20,12 @@ public class EliminadorDeCuenta {
     }
 
     public Cuenta eliminarCuenta(long dni, long cbu) throws NotFoundException {
-        if (clienteDao.findCliente(dni) == null) {
+        if (clienteDao.findCliente(dni) == null)
             throw new ClienteNoEncontradoException(dni);
-        }
 
         Cuenta cuenta = cuentaDao.findCuentaDelCliente(cbu, dni);
-        if (cuenta == null) {
+        if (cuenta == null)
             throw new CuentaNoEncontradaException(cbu);
-        }
 
         cuentaDao.deleteCuenta(cbu);
         new MovimientoDao().deleteMovimiento(cbu);

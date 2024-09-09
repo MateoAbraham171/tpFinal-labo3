@@ -18,6 +18,7 @@ import java.util.Set;
 //clase creada para simular la creacion de los objetos necesarios
 //para la ejecucion de los test
 public class GeneradorDeObjetosParaTests {
+    private final long CBU = 123456L;
 
     public Cliente getCliente(String nombre, long dni) {
         Cliente cliente = new Cliente();
@@ -50,7 +51,7 @@ public class GeneradorDeObjetosParaTests {
         cuenta.setDniTitular(dniTitular);
         cuenta.setTipoCuenta(tipoCuenta);
         cuenta.setMoneda(tipoMoneda);
-        cuenta.setCBU(123456);
+        cuenta.setCBU(CBU);
         cuenta.setBalance(100000);
 
         return cuenta;
@@ -82,23 +83,22 @@ public class GeneradorDeObjetosParaTests {
 
     public List<Movimiento> getListaDeMovimientos() {
         List<Movimiento> lista = new ArrayList<>();
-        lista.add(getMovimiento(123456, "Deposito", 1000));
-        lista.add(getMovimiento(123456, "Extraccion", 500));
+        lista.add(getMovimiento("Deposito", 1000));
+        lista.add(getMovimiento("Extraccion", 500));
 
         return lista;
     }
 
-    private Movimiento getMovimiento(int i, String deposito, int i1) {
+    private Movimiento getMovimiento(String deposito, int monto) {
         Movimiento movimiento = new Movimiento();
-        movimiento.setCBU(i);
+        movimiento.setCBU(CBU);
         movimiento.setTipoOperacion(deposito);
-        movimiento.setMonto(i1);
+        movimiento.setMonto(monto);
 
         return movimiento;
     }
 
     public TransferDto getTransferDto(long CBUOrigen, long CBUDestino, double monto){
-        TransferDto transferDto = new TransferDto(CBUOrigen, CBUDestino, monto);
-        return transferDto;
+        return new TransferDto(CBUOrigen, CBUDestino, monto);
     }
 }

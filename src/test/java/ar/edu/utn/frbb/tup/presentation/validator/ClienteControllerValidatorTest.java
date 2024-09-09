@@ -36,9 +36,7 @@ public class ClienteControllerValidatorTest {
         when(clienteDto.getMail()).thenReturn("takanaka171@yahoo.com");
         when(clienteDto.getTipoPersona()).thenReturn("f");
         when(clienteDto.getDni()).thenReturn(85876925L);
-
         assertDoesNotThrow(() -> clienteControllerValidator.validateCliente(clienteDto));
-
         verify(clienteDto, times(1)).getNombre();
         verify(clienteDto, times(1)).getApellido();
         verify(clienteDto, times(1)).getDireccion();

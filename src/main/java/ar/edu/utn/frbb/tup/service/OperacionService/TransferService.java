@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.OperacionService;
 
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaDeBajaException;
+import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaDistintaMonedaException;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
@@ -34,15 +35,11 @@ public class TransferService {
         if(!cuentaOrigen.getEstado())
             throw new CuentaDeBajaException(datosTransfer.getCbuOrigen());
 
-        // Calcular el monto con cargo
         double montoConCargo = calcularMontoConCargoTransferencia(datosTransfer.getMonto(), cuentaOrigen.getMoneda());
 
-        // Verificar si hay saldo suficiente en la cuenta origen
         if (montoConCargo > cuentaOrigen.getBalance())
             throw new NoAlcanzaException(cuentaOrigen.getCBU(), montoConCargo);
 
-
-        // Realizar la transferencia según el banco del cliente
         return realizarTransferencia(cuentaOrigen, datosTransfer, montoConCargo);
 }
 
@@ -60,12 +57,9 @@ public class TransferService {
     private Operacion realizarTransferencia(Cuenta cuentaOrigen, Transfer datosTransfer, double montoConCargo) throws NotFoundException, ConflictException {
         BanelcoService banelcoService = new BanelcoService();
 
-        //damos por sentado que si la cuenta no existe en este banco, es de otro banco
         Cuenta cuentaDestino = cuentaDao.findCuenta(datosTransfer.getCbuDestino());
-        if (cuentaDestino == null)
-            banelcoService.validateCuentaExiste(datosTransfer.getCbuDestino());
+        validateCuentaDestino(cuentaDestino, banelcoService, datosTransfer, cuentaOrigen.getMoneda());
 
-        // Actualizar saldo de cuenta de origen y registrar movimiento
         Operacion transferenciaSaliente = new RetiradorDeSaldo(cuentaDao, movimientoDao).retiro(cuentaOrigen.getCBU(), new MontoDeOperacionDto(montoConCargo), TRANSFERENCIA_SALIENTE);
         transferenciaSaliente.setTipoOperacion(TRANSFERENCIA_SALIENTE + " exitosa!! :)");
 
@@ -75,5 +69,14 @@ public class TransferService {
             banelcoService.transfer();
 
         return transferenciaSaliente;
+    }
+
+    private void validateCuentaDestino(Cuenta cuentaDestino, BanelcoService banelcoService, Transfer datosTransfer, TipoMoneda monedaCuentaOrigen) throws NotFoundException, ConflictException {
+        if (cuentaDestino == null)
+            banelcoService.validateCuentaExiste(datosTransfer.getCbuDestino());
+        else if (!cuentaDestino.getEstado())
+            throw new CuentaDeBajaException(datosTransfer.getCbuDestino());
+        else if (cuentaDestino.getMoneda() != monedaCuentaOrigen)
+            throw new CuentaDistintaMonedaException();
     }
 }

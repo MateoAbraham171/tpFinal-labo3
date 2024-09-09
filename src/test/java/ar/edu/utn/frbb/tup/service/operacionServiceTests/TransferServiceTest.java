@@ -2,6 +2,7 @@ package ar.edu.utn.frbb.tup.service.operacionServiceTests;
 
 import ar.edu.utn.frbb.tup.GeneradorDeObjetosParaTests;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaDeBajaException;
+import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaDistintaMonedaException;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.NoAlcanzaException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
@@ -55,19 +56,7 @@ public class TransferServiceTest {
     }
 
     @Test
-    public void testTransferenciaMismoBancoFailNoAlcanza() {
-        Cuenta cuentaOrigen = generadorDeObjetosParaTests.getCuenta(12345678L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES);
-        Cuenta cuentaDestino = generadorDeObjetosParaTests.getCuenta(87654321L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES).setCBU(654321);
-        cuentaOrigen.setBalance(50);
-        cuentaDestino.setBalance(0);
-        transferDto = generadorDeObjetosParaTests.getTransferDto(cuentaOrigen.getCBU(), cuentaDestino.getCBU(), 100);
-        when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
-        assertThrows(NoAlcanzaException.class, () -> transferService.transferencia(transferDto));
-        verify(cuentaDao, times(1)).findCuenta(cuentaOrigen.getCBU());
-    }
-
-    @Test
-    public void testTransferenciaDistintoBancoSuccess() throws ConflictException, NotFoundException {
+    public void testTransferenciaBanelcoSuccess() throws ConflictException, NotFoundException {
         Cuenta cuentaOrigen = generadorDeObjetosParaTests.getCuenta(12345678L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES);
         transferDto = generadorDeObjetosParaTests.getTransferDto(cuentaOrigen.getCBU(), 111111, 100);
         when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
@@ -84,7 +73,7 @@ public class TransferServiceTest {
     }
 
     @Test
-    public void testTransferenciaDistintoBancoFail() {
+    public void testTransferenciaBanelcoFail() {
         Cuenta cuentaOrigen = generadorDeObjetosParaTests.getCuenta(12345678L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES);
         transferDto = generadorDeObjetosParaTests.getTransferDto(cuentaOrigen.getCBU(), 222222, 100);
         when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
@@ -109,5 +98,41 @@ public class TransferServiceTest {
         when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
         assertThrows(CuentaDeBajaException.class, () -> transferService.transferencia(transferDto));
         verify(cuentaDao, times(1)).findCuenta(cuentaOrigen.getCBU());
+    }
+
+    @Test
+    public void testTransferenciaFailNoAlcanza() {
+        Cuenta cuentaOrigen = generadorDeObjetosParaTests.getCuenta(12345678L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES);
+        Cuenta cuentaDestino = generadorDeObjetosParaTests.getCuenta(87654321L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES).setCBU(654321);
+        cuentaOrigen.setBalance(50);
+        cuentaDestino.setBalance(0);
+        transferDto = generadorDeObjetosParaTests.getTransferDto(cuentaOrigen.getCBU(), cuentaDestino.getCBU(), 100);
+        when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
+        assertThrows(NoAlcanzaException.class, () -> transferService.transferencia(transferDto));
+        verify(cuentaDao, times(1)).findCuenta(cuentaOrigen.getCBU());
+    }
+
+    @Test
+    public void testTransferenciaFailCuentaDestinoDeBaja() {
+        Cuenta cuentaOrigen = generadorDeObjetosParaTests.getCuenta(12345678L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES);
+        Cuenta cuentaDestino = generadorDeObjetosParaTests.getCuenta(87654321L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES).setCBU(654321).setEstado(false);
+        transferDto = generadorDeObjetosParaTests.getTransferDto(cuentaOrigen.getCBU(), cuentaDestino.getCBU(), 100);
+        when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
+        when(cuentaDao.findCuenta(cuentaDestino.getCBU())).thenReturn(cuentaDestino);
+        assertThrows(CuentaDeBajaException.class, () -> transferService.transferencia(transferDto));
+        verify(cuentaDao, times(1)).findCuenta(cuentaOrigen.getCBU());
+        verify(cuentaDao, times(1)).findCuenta(cuentaDestino.getCBU());
+    }
+
+    @Test
+    public void testTransferenciaFailCuentaDistintaMoneda() {
+        Cuenta cuentaOrigen = generadorDeObjetosParaTests.getCuenta(12345678L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES);
+        Cuenta cuentaDestino = generadorDeObjetosParaTests.getCuenta(87654321L, TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.PESOS).setCBU(654321);
+        transferDto = generadorDeObjetosParaTests.getTransferDto(cuentaOrigen.getCBU(), cuentaDestino.getCBU(), 100);
+        when(cuentaDao.findCuenta(cuentaOrigen.getCBU())).thenReturn(cuentaOrigen);
+        when(cuentaDao.findCuenta(cuentaDestino.getCBU())).thenReturn(cuentaDestino);
+        assertThrows(CuentaDistintaMonedaException.class, () -> transferService.transferencia(transferDto));
+        verify(cuentaDao, times(1)).findCuenta(cuentaOrigen.getCBU());
+        verify(cuentaDao, times(1)).findCuenta(cuentaDestino.getCBU());
     }
 }

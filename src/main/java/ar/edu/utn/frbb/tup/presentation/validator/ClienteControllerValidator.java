@@ -7,11 +7,9 @@ import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeParseException;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
 import ar.edu.utn.frbb.tup.exception.ControllerExceptions.*;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class ClienteControllerValidator {
@@ -28,43 +26,36 @@ public class ClienteControllerValidator {
     }
 
     private void validateNombre(String nombre) throws BadRequestException {
-        if (nombre == null || nombre.isEmpty()) {
+        if (nombre == null || nombre.isEmpty())
             throw new CampoVacioException("nombre");
-        }
+
         validateSoloLetras(nombre, "nombre");
     }
 
     private void validateApellido(String apellido) throws BadRequestException {
-        if (apellido == null || apellido.isEmpty()) {
+        if (apellido == null || apellido.isEmpty())
             throw new CampoVacioException("apellido");
-        }
+
         validateSoloLetras(apellido, "apellido");
     }
 
     private void validateSoloLetras(String str, String mensaje) throws BadRequestException {
-        if (!str.matches("[a-zA-Z \\-']+")) {
+        if (!str.matches("[a-zA-Z \\-']+"))
             throw new InputInvalidoException("Error: El formato del " + mensaje + " es invalido");
-        }
     }
 
     private void validateDireccion(String direccion) throws BadRequestException {
-        if (direccion == null || direccion.isEmpty()) {
+        if (direccion == null || direccion.isEmpty())
             throw new CampoVacioException("direccion");
-        }
 
-        // Dividimos la dirección en partes separadas por espacios
         String[] partes = direccion.trim().split("\\s+");
 
-        // Verificamos que haya al menos dos partes
-        if (partes.length < 2) {
+        if (partes.length < 2)
             throw new InputInvalidoException("Error: La dirección debe contener un nombre de calle y un número");
-        }
 
-        // Verificamos que la última parte sea numérica (número de la calle)
         String numeroCalle = partes[partes.length - 1];
-        if (!numeroCalle.matches("\\d+")) {
+        if (!numeroCalle.matches("\\d+"))
             throw new InputInvalidoException("Error: La dirección debe terminar con un número válido");
-        }
     }
 
     private void validateFechaNacimiento(String fechaNacimiento) throws BadRequestException, ConflictException {
@@ -74,40 +65,31 @@ public class ClienteControllerValidator {
     }
 
     private void validarSiFechaDeNacimientoEsPosible(LocalDate fechaNacimiento) throws BadRequestException {
-        if (fechaNacimiento.isAfter(LocalDate.now())) {
+        if (fechaNacimiento.isAfter(LocalDate.now()))
             throw new FechaNacimientoInvalidaException("La fecha de nacimiento no puede ser futura.");
-        }
-        if (fechaNacimiento.isBefore(FECHA_NACIMIENTO_MINIMA)) {
+        if (fechaNacimiento.isBefore(FECHA_NACIMIENTO_MINIMA))
             throw new FechaNacimientoInvalidaException("La fecha de nacimiento debe ser a partir del " + FECHA_NACIMIENTO_MINIMA + ".");
-        }
     }
 
     private void esMayor(LocalDate fechaNacimiento) throws ConflictException {
         Period periodo = Period.between(fechaNacimiento, LocalDate.now());
 
-        if (periodo.getYears() < 18) {
+        if (periodo.getYears() < 18)
             throw new ClienteMenorException("Solo se permiten clientes mayores de 18 años");
-        }
     }
 
     private void validateMail(String mail) throws BadRequestException {
-        if (mail == null || mail.isEmpty()) {
+        if (mail == null || mail.isEmpty())
             throw new CampoVacioException("mail");
-        }
-        if (!mail.contains("@") || !mail.contains(".")) {
+        if (!mail.contains("@") || !mail.contains("."))
             throw new InputInvalidoException("Error: Ingrese un mail válido");
-        }
     }
 
     private void validateTipoPersona(String tipoPersona) throws BadRequestException {
-        if (tipoPersona == null || tipoPersona.isEmpty()) {
+        if (tipoPersona == null || tipoPersona.isEmpty())
             throw new CampoVacioException("tipoPersona");
-        }
-        try {
-            TipoPersona.fromString(tipoPersona);
-        } catch (BadRequestException ex) {
-            throw new InputInvalidoException("El tipo de persona debe ser 'F' o 'J'.");
-        }
+
+        TipoPersona.fromString(tipoPersona);
     }
 
     public void validateDni(long dni) throws BadRequestException {
@@ -115,4 +97,3 @@ public class ClienteControllerValidator {
         if (dni < 10000000 || dni > 99999999) throw new DniInvalidoException();
     }
 }
-

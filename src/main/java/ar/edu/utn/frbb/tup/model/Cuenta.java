@@ -41,6 +41,7 @@ public class  Cuenta {
     public boolean getEstado() {
         return estado;
     }
+
     public Cuenta setEstado(boolean estado) {
         this.estado = estado;
         return this;
@@ -49,10 +50,11 @@ public class  Cuenta {
     public double getBalance() {
         return balance;
     }
+
     public Cuenta setBalance(double saldo) {
         // Redondea el valor a 2 decimales usando BigDecimal
         BigDecimal bd = BigDecimal.valueOf(saldo);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);  // Redondeo hacia el número más cercano
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
         this.balance = bd.doubleValue();
         return this;
     }
@@ -60,6 +62,7 @@ public class  Cuenta {
     public long getCBU() {
         return CBU;
     }
+
     public Cuenta setCBU(long CBU) {
         this.CBU = CBU;
         return this;
@@ -68,22 +71,23 @@ public class  Cuenta {
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
-    public Cuenta setFechaCreacion(LocalDate fechaCreacion) {
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
-        return this;
     }
 
     public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
     }
+
     public void setTipoCuenta(TipoCuenta tipoCuenta) {
         this.tipoCuenta = tipoCuenta;
     }
 
-
     public TipoMoneda getMoneda() {
         return tipoMoneda;
     }
+
     public void setMoneda(TipoMoneda tipoMoneda) {
         this.tipoMoneda = tipoMoneda;
     }
@@ -91,6 +95,7 @@ public class  Cuenta {
     public long getDniTitular() {
         return dniTitular;
     }
+
     public void setDniTitular(long dniTitular) {
         this.dniTitular = dniTitular;
     }

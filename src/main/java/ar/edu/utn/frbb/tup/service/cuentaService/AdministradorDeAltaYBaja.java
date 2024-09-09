@@ -22,15 +22,13 @@ public class AdministradorDeAltaYBaja {
     public Cuenta gestionarEstado(long dni, long cbu, boolean estado) throws NotFoundException {
         Cliente cliente = clienteDao.findCliente(dni);
 
-        if (cliente == null) {
+        if (cliente == null)
             throw new ClienteNoEncontradoException(dni);
-        }
 
         Cuenta cuenta = cuentaDao.findCuentaDelCliente(cbu, dni);
 
-        if (cuenta == null) {
+        if (cuenta == null)
             throw new CuentaNoEncontradaException(dni);
-        }
 
         cuentaDao.deleteCuenta(cbu);
         cuenta.setEstado(estado);

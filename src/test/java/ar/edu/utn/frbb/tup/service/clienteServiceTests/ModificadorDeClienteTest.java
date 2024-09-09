@@ -37,14 +37,10 @@ public class ModificadorDeClienteTest {
     public void testModificarClienteSuccess() throws NotFoundException, BadRequestException {
         ClienteDto clienteConModificaciones = generadorDeObjetosParaTests.getClienteDto("Gino", 85876925L);
         Cliente cliente = new Cliente(clienteDto);
-
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(cliente);
-
         Cliente clienteModificado = modificadorDeCliente.modificarCliente(clienteConModificaciones);
-
         assertNotNull(clienteModificado);
         assertNotEquals(cliente.getNombre(), clienteModificado.getNombre());
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(1)).deleteCliente(cliente.getDni());
         verify(clienteDao, times(1)).saveCliente(clienteModificado);
@@ -53,9 +49,7 @@ public class ModificadorDeClienteTest {
     @Test
     public void testModificadorDeClienteNotFound() {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
-
         assertThrows(ClienteNoEncontradoException.class, () -> modificadorDeCliente.modificarCliente(clienteDto));
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
         verify(clienteDao, times(0)).deleteCliente(clienteDto.getDni());
     }

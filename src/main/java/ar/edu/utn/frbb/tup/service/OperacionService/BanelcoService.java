@@ -8,7 +8,7 @@ import java.util.Random;
 public class BanelcoService {
 
     public void validateCuentaExiste(long cbu) throws NotFoundException {
-        //a fines de testo, establezco dos cuentas con resultado previsible
+        //a fines de testeo, establezco dos cuentas con resultado previsible
         //esto es para que el testeo sea determinístico
         if (cbu == 111111)
             return;

@@ -16,3 +16,6 @@ CBU Origen, Fecha de Operacion, Hora de Operacion, Tipo de Operacion, Monto
 886003,2024-09-04,17:38:35,Transferencia saliente,1020001,02
 135009,2024-09-04,17:38:35,Transferencia entrante,1000001,00
 886003,2024-09-04,17:41:05,Transferencia saliente,100,00
+212853,2024-09-09,15:44:43,Deposito,1000000,00
+212853,2024-09-09,15:45:40,Transferencia saliente,100,00
+822559,2024-09-09,15:45:40,Transferencia entrante,100,00

@@ -35,21 +35,16 @@ public class MostradorDeClienteTest {
     @Test
     public void testMostrarClienteSuccess() throws NotFoundException, BadRequestException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
-
         Cliente clienteEncontrado = mostradorDeCliente.mostrarCliente(clienteDto.getDni());
-
         assertNotNull(clienteEncontrado);
         assertEquals(clienteDto.getDni(), clienteEncontrado.getDni());
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
     }
 
     @Test
     public void testMostrarClienteNotFound() {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
-
         assertThrows(ClienteNoEncontradoException.class, () -> mostradorDeCliente.mostrarCliente(clienteDto.getDni()));
-
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
     }
 }

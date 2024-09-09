@@ -23,9 +23,8 @@ public class EliminadorDeCliente {
     public Cliente eliminarCliente(long dni) throws NotFoundException {
         Cliente cliente = clienteDao.findCliente(dni);
 
-        if (cliente == null) {
+        if (cliente == null)
             throw new ClienteNoEncontradoException(dni);
-        }
 
         List<Long> cbusDeCuentasParaEliminar = cuentaDao.getCBUsVinculadosPorDni(dni);
         EliminadorDeCuenta eliminadorDeCuenta = new EliminadorDeCuenta(clienteDao, cuentaDao);

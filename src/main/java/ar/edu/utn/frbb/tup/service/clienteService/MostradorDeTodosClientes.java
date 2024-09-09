@@ -19,9 +19,8 @@ public class MostradorDeTodosClientes {
     public List<Cliente> mostrarTodosClientes() throws NotFoundException {
         List<Cliente> clientes = clienteDao.findAllClientes();
 
-        if (clientes.isEmpty()) {
+        if (clientes.isEmpty())
             throw new NoExistenClientesException();
-        }
 
         return clientes;
     }

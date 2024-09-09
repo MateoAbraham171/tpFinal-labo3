@@ -29,4 +29,3 @@ public class CuentaDto {
         this.tipoMoneda = tipoMoneda;
     }
 }
-

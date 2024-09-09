@@ -17,9 +17,8 @@ public class MostradorDeCliente {
     public Cliente mostrarCliente(long dni) throws NotFoundException {
         Cliente cliente = clienteDao.findCliente(dni);
 
-        if (cliente == null) {
+        if (cliente == null)
             throw new ClienteNoEncontradoException(dni);
-        }
 
         return cliente;
     }

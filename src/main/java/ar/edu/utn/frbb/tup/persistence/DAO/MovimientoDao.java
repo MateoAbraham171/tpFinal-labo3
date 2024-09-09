@@ -45,7 +45,6 @@ public class MovimientoDao extends BaseDao<Movimiento> {
 
     public List<Movimiento> findMovimientos(long CBU) {
         try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
-            // Saltamos la primera línea (encabezado)
             reader.readLine();
 
             return reader.lines()

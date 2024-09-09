@@ -40,9 +40,7 @@ public class EliminadorDeCuentaTest {
         Cuenta cuenta = new Cuenta(cuentaDto);
         when(clienteDao.findCliente(cuentaDto.getDniTitular())).thenReturn(new Cliente());
         when(cuentaDao.findCuentaDelCliente(cuenta.getCBU(), cuentaDto.getDniTitular())).thenReturn(cuenta);
-
         Cuenta cuentaEliminada = eliminadorDeCuenta.eliminarCuenta(cuentaDto.getDniTitular(), cuenta.getCBU());
-
         assertNotNull(cuentaEliminada);
         assertEquals(cuentaDto.getDniTitular(), cuentaEliminada.getDniTitular());
         verify(clienteDao, times(1)).findCliente(cuentaDto.getDniTitular());
@@ -54,9 +52,7 @@ public class EliminadorDeCuentaTest {
     public void testEliminarCuentaClienteNoEncontradoException() throws BadRequestException {
         Cuenta cuenta = new Cuenta(cuentaDto);
         when(clienteDao.findCliente(cuentaDto.getDniTitular())).thenReturn(null);
-
         assertThrows(ClienteNoEncontradoException.class, () -> eliminadorDeCuenta.eliminarCuenta(cuentaDto.getDniTitular(), cuenta.getCBU()));
-
         verify(clienteDao, times(1)).findCliente(cuentaDto.getDniTitular());
         verify(cuentaDao, times(0)).findCuentaDelCliente(cuenta.getCBU(), cuentaDto.getDniTitular());
         verify(cuentaDao, times(0)).deleteCuenta(cuenta.getCBU());
@@ -67,9 +63,7 @@ public class EliminadorDeCuentaTest {
         Cuenta cuenta = new Cuenta(cuentaDto);
         when(clienteDao.findCliente(cuentaDto.getDniTitular())).thenReturn(new Cliente());
         when(cuentaDao.findCuentaDelCliente(cuenta.getCBU(), cuentaDto.getDniTitular())).thenReturn(null);
-
         assertThrows(NotFoundException.class, () -> eliminadorDeCuenta.eliminarCuenta(cuentaDto.getDniTitular(), cuenta.getCBU()));
-
         verify(clienteDao, times(1)).findCliente(cuentaDto.getDniTitular());
         verify(cuentaDao, times(1)).findCuentaDelCliente(cuenta.getCBU(), cuentaDto.getDniTitular());
         verify(cuentaDao, times(0)).deleteCuenta(cuenta.getCBU());

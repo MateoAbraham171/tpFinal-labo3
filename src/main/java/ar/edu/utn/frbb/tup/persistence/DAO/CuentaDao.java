@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,7 +45,6 @@ public class CuentaDao extends BaseDao<Cuenta> {
 
     public Cuenta findCuentaDelCliente(long cbu, long dni) {
         try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
-            // Saltamos la primera línea (encabezado)
             reader.readLine();
 
             return reader.lines()
@@ -76,7 +74,6 @@ public class CuentaDao extends BaseDao<Cuenta> {
 
     public Set<Cuenta> findAllCuentasDelCliente(long dni) {
         try (BufferedReader reader = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
-            // Saltamos la primera línea (encabezado)
             reader.readLine();
 
             return reader.lines()

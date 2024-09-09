@@ -7,17 +7,14 @@ import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.model.Operacion;
 import ar.edu.utn.frbb.tup.persistence.DAO.CuentaDao;
-import ar.edu.utn.frbb.tup.persistence.DAO.MovimientoDao;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ConsultorDeSaldo {
-    private final MovimientoDao movimientoDao;
     private final CuentaDao cuentaDao;
     private final String TIPO_DE_OPERACION = "Consulta";
 
-    public ConsultorDeSaldo(MovimientoDao movimientoDao, CuentaDao cuentaDao) {
-        this.movimientoDao = movimientoDao;
+    public ConsultorDeSaldo(CuentaDao cuentaDao) {
         this.cuentaDao = cuentaDao;
     }
 
