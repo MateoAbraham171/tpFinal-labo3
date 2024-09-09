@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.clienteServiceTests;
 
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
@@ -40,7 +41,7 @@ public class EliminadorDeClienteTest {
     }
 
     @Test
-    public void testEliminarClienteSinCuentasSuccess() throws NotFoundException {
+    public void testEliminarClienteSinCuentasSuccess() throws NotFoundException, BadRequestException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteEliminado = eliminadorDeCliente.eliminarCliente(clienteDto.getDni());
@@ -53,7 +54,7 @@ public class EliminadorDeClienteTest {
     }
 
     @Test
-    public void testEliminarClienteConCuentasSuccess() throws NotFoundException {
+    public void testEliminarClienteConCuentasSuccess() throws NotFoundException, BadRequestException {
         Cuenta cuenta1 = generadorDeObjetosParaTests.getCuenta(clienteDto.getDni(), TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.PESOS);
         Cuenta cuenta2 = generadorDeObjetosParaTests.getCuenta(clienteDto.getDni(), TipoCuenta.CUENTA_CORRIENTE, TipoMoneda.DOLARES).setCBU(234567);
         List<Long> clienteCBUs = new ArrayList<>();

@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.clienteServiceTests;
 
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
@@ -32,7 +33,7 @@ public class MostradorDeClienteTest {
     }
 
     @Test
-    public void testMostrarClienteSuccess() throws NotFoundException {
+    public void testMostrarClienteSuccess() throws NotFoundException, BadRequestException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
 
         Cliente clienteEncontrado = mostradorDeCliente.mostrarCliente(clienteDto.getDni());

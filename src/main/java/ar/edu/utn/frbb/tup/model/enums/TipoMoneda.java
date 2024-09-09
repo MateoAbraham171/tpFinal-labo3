@@ -1,5 +1,8 @@
 package ar.edu.utn.frbb.tup.model.enums;
 
+import ar.edu.utn.frbb.tup.exception.ControllerExceptions.InputInvalidoException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
+
 public enum TipoMoneda {
     PESOS("P"),
     DOLARES("D");
@@ -10,12 +13,12 @@ public enum TipoMoneda {
         this.descripcion = descripcion;
     }
 
-    public static TipoMoneda fromString(String text) throws IllegalArgumentException {
+    public static TipoMoneda fromString(String text) throws BadRequestException {
         for (TipoMoneda tipo : TipoMoneda.values()) {
             if (tipo.descripcion.equalsIgnoreCase(text)) {
                 return tipo;
             }
         }
-        throw new IllegalArgumentException("No se pudo encontrar un TipoMoneda con la descripción: " + text + ", debe ser 'P' o 'D'");
+        throw new InputInvalidoException("No se pudo encontrar un TipoMoneda con la descripción: " + text + ", debe ser 'P' o 'D'");
     }
 }

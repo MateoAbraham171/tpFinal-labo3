@@ -1,7 +1,6 @@
 package ar.edu.utn.frbb.tup.service.cuentaService;
 
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
-import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.NoHayCuentasException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class MostradorDeCuentas {
+public class MostradorDeCuenta {
     private final ClienteDao clienteDao;
     private final CuentaDao cuentaDao;
 
-    public MostradorDeCuentas(ClienteDao clienteDao, CuentaDao cuentaDao) {
+    public MostradorDeCuenta(ClienteDao clienteDao, CuentaDao cuentaDao) {
         this.clienteDao = clienteDao;
         this.cuentaDao = cuentaDao;
     }

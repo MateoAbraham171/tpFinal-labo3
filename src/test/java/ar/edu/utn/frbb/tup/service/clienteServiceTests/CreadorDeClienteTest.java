@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.clienteServiceTests;
 
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteAlreadyExistsException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
@@ -32,16 +33,16 @@ public class CreadorDeClienteTest {
     }
 
     @Test
-    public void testCrearClienteSuccess() throws ConflictException {
+    public void testCrearClienteSuccess() throws ConflictException, BadRequestException {
         when(clienteDao.findCliente(clienteDto.getDni())).thenReturn(null);
 
-        Cliente clienteResultado = creadorDeCliente.crearCliente(clienteDto);
+        Cliente clienteCreado = creadorDeCliente.crearCliente(clienteDto);
 
-        assertEquals(clienteDto.getDni(), clienteResultado.getDni());
-        assertNotNull(clienteResultado);
+        assertNotNull(clienteCreado);
+        assertEquals(clienteDto.getDni(), clienteCreado.getDni());
 
         verify(clienteDao, times(1)).findCliente(clienteDto.getDni());
-        verify(clienteDao, times(1)).saveCliente(clienteResultado);
+        verify(clienteDao, times(1)).saveCliente(clienteCreado);
 
     }
 

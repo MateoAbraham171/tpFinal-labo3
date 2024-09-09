@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.service.clienteService;
 
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
@@ -13,7 +14,7 @@ public class CreadorDeCliente {
 
     public CreadorDeCliente(ClienteDao clienteDao) { this.clienteDao = clienteDao; }
 
-    public Cliente crearCliente(ClienteDto clienteDto) throws ConflictException {
+    public Cliente crearCliente(ClienteDto clienteDto) throws ConflictException, BadRequestException {
         if (clienteDao.findCliente(clienteDto.getDni()) != null)
             throw new ClienteAlreadyExistsException();
 

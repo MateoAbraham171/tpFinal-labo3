@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.clienteServiceTests;
 
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
@@ -33,7 +34,7 @@ public class ModificadorDeClienteTest {
     }
 
     @Test
-    public void testModificarClienteSuccess() throws NotFoundException {
+    public void testModificarClienteSuccess() throws NotFoundException, BadRequestException {
         ClienteDto clienteConModificaciones = generadorDeObjetosParaTests.getClienteDto("Gino", 85876925L);
         Cliente cliente = new Cliente(clienteDto);
 

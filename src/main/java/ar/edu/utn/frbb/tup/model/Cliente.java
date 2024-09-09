@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.model;
 
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
 import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 
@@ -19,7 +20,7 @@ public class Cliente extends Persona {
         this.fechaAlta = LocalDate.now();
     }
 
-    public Cliente(ClienteDto clienteDto) {
+    public Cliente(ClienteDto clienteDto) throws BadRequestException {
         super(clienteDto.getDni(), clienteDto.getApellido(), clienteDto.getNombre(), clienteDto.getFechaNacimiento(), clienteDto.getDireccion());
         fechaAlta = LocalDate.now();
         this.mail = clienteDto.getMail();
@@ -54,7 +55,7 @@ public class Cliente extends Persona {
         this.cuentas = cuentas;
     }
 
-    public void addCuenta(Cuenta cuenta) throws IllegalAccessException {
+    public void addCuenta(Cuenta cuenta) {
         this.cuentas.add(cuenta);
     }
 }

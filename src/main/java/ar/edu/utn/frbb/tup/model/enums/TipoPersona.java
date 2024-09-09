@@ -1,5 +1,8 @@
 package ar.edu.utn.frbb.tup.model.enums;
 
+import ar.edu.utn.frbb.tup.exception.ControllerExceptions.InputInvalidoException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
+
 public enum TipoPersona {
 
     PERSONA_FISICA("F"),
@@ -11,16 +14,12 @@ public enum TipoPersona {
         this.descripcion = descripcion;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public static TipoPersona fromString(String text) {
+    public static TipoPersona fromString(String text) throws BadRequestException {
         for (TipoPersona tipo : TipoPersona.values()) {
             if (tipo.descripcion.equalsIgnoreCase(text)) {
                 return tipo;
             }
         }
-        throw new IllegalArgumentException("No se pudo encontrar un TipoPersona con la descripción: " + text);
+        throw new InputInvalidoException("No se pudo encontrar un TipoPersona con la descripción: " + text);
     }
 }

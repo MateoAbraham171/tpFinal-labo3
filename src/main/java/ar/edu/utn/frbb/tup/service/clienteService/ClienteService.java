@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.service.clienteService;
 
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
@@ -36,7 +37,7 @@ public class ClienteService {
         clienteDao.inicializarClientes();
     }
 
-    public Cliente crearCliente(ClienteDto clienteDto) throws ConflictException {
+    public Cliente crearCliente(ClienteDto clienteDto) throws ConflictException, BadRequestException {
         return creadorDeCliente.crearCliente(clienteDto);
     }
 
@@ -44,7 +45,7 @@ public class ClienteService {
         return eliminadorDeCliente.eliminarCliente(dni);
     }
 
-    public Cliente modificarCliente(ClienteDto clienteDto) throws NotFoundException {
+    public Cliente modificarCliente(ClienteDto clienteDto) throws NotFoundException, BadRequestException {
         return modificadorDeCliente.modificarCliente(clienteDto);
     }
 

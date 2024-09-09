@@ -7,7 +7,10 @@ ACLARACIONES:
 - 
 
 PENDIENTES:
-- Test (todos)
+- Test:
+  - TransferenciaService faltan algunos test y OperacionService
+  - Validator de cuenta y transferencia
+  - Controllers todos
 - Documentación
 - todos los DTO pueden pasar a ser record
 - limpiar getters y setters que no se usen

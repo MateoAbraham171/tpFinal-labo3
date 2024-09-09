@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.service.cuentaService;
 
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
 import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaAlreadyExistsException;
@@ -16,16 +17,16 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class CreadorDeCuentas {
+public class CreadorDeCuenta {
     private final ClienteDao clienteDao;
     private final CuentaDao cuentaDao;
 
-    public CreadorDeCuentas(ClienteDao clienteDao, CuentaDao cuentaDao) {
+    public CreadorDeCuenta(ClienteDao clienteDao, CuentaDao cuentaDao) {
         this.clienteDao = clienteDao;
         this.cuentaDao = cuentaDao;
     }
 
-    public Cuenta crearCuenta(CuentaDto cuentaDto) throws NotFoundException, ConflictException {
+    public Cuenta crearCuenta(CuentaDto cuentaDto) throws NotFoundException, ConflictException, BadRequestException {
         Cuenta cuenta = new Cuenta(cuentaDto);
 
         if (clienteDao.findCliente(cuenta.getDniTitular()) == null)
@@ -43,9 +44,11 @@ public class CreadorDeCuentas {
     private void verificarCuentaNoRepetida(TipoCuenta tipoCuenta, TipoMoneda tipoMoneda, long dniTitular) throws ConflictException {
         Set<Cuenta> cuentasCliente = cuentaDao.findAllCuentasDelCliente(dniTitular);
 
-        for (Cuenta cuenta : cuentasCliente) {
-            if (tipoCuenta.equals(cuenta.getTipoCuenta()) && tipoMoneda.equals(cuenta.getMoneda())) {
-                throw new TipoCuentaAlreadyExistsException();
+        if (cuentasCliente != null) {
+            for (Cuenta cuenta : cuentasCliente) {
+                if (tipoCuenta.equals(cuenta.getTipoCuenta()) && tipoMoneda.equals(cuenta.getMoneda())) {
+                    throw new TipoCuentaAlreadyExistsException();
+                }
             }
         }
     }

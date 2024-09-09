@@ -1,5 +1,7 @@
 package ar.edu.utn.frbb.tup.service.OperacionService;
 
+import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaDeBajaException;
+import ar.edu.utn.frbb.tup.exception.CuentasExceptions.CuentaNoEncontradaException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.*;
@@ -27,9 +29,13 @@ public class TransferService {
         Transfer datosTransfer = new Transfer(transferDto);
         Cuenta cuentaOrigen = cuentaDao.findCuenta(datosTransfer.getCbuOrigen());
 
+        if (cuentaOrigen == null)
+            throw new CuentaNoEncontradaException(datosTransfer.getCbuOrigen());
+        if(!cuentaOrigen.getEstado())
+            throw new CuentaDeBajaException(datosTransfer.getCbuOrigen());
+
         // Calcular el monto con cargo
         double montoConCargo = calcularMontoConCargoTransferencia(datosTransfer.getMonto(), cuentaOrigen.getMoneda());
-
 
         // Verificar si hay saldo suficiente en la cuenta origen
         if (montoConCargo > cuentaOrigen.getBalance())
@@ -54,6 +60,7 @@ public class TransferService {
     private Operacion realizarTransferencia(Cuenta cuentaOrigen, Transfer datosTransfer, double montoConCargo) throws NotFoundException, ConflictException {
         BanelcoService banelcoService = new BanelcoService();
 
+        //damos por sentado que si la cuenta no existe en este banco, es de otro banco
         Cuenta cuentaDestino = cuentaDao.findCuenta(datosTransfer.getCbuDestino());
         if (cuentaDestino == null)
             banelcoService.validateCuentaExiste(datosTransfer.getCbuDestino());

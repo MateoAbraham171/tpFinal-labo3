@@ -29,22 +29,17 @@ public class MostradorDeTodosClientesTest {
     @Test
     public void testMostradorDeTodosLosClientesSuccess() throws NotFoundException {
         List<Cliente> listaDeClientes = generadorDeObjetosParaTests.getListaDeClientes();
-
         when(clienteDao.findAllClientes()).thenReturn(listaDeClientes);
         List<Cliente> clientesParaMostrar = mostradorDeTodosClientes.mostrarTodosClientes();
-
         assertNotNull(clientesParaMostrar);
         assertEquals(listaDeClientes, clientesParaMostrar);
-
         verify(clienteDao, times(1)).findAllClientes();
     }
 
     @Test
     public void testNoHayClientesParaMostrar() {
         when(clienteDao.findAllClientes()).thenReturn(new ArrayList<>());
-
         assertThrows(NoExistenClientesException.class , () -> mostradorDeTodosClientes.mostrarTodosClientes());
-
         verify(clienteDao, times(1)).findAllClientes();
     }
 }

@@ -29,6 +29,8 @@ public class ConsultorDeSaldo {
         if (!cuenta.getEstado())
             throw new CuentaDeBajaException(cbu);
 
-        return new Operacion().setCbu(cbu).setSaldoActual(cuenta.getBalance()).setTipoOperacion(TIPO_DE_OPERACION);
+        return new Operacion().setCbu(cbu)
+                .setSaldoActual(cuenta.getBalance())
+                .setTipoOperacion(TIPO_DE_OPERACION);
     }
 }

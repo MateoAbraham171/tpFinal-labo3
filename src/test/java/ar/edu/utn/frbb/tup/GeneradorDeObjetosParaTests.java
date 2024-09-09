@@ -2,15 +2,18 @@ package ar.edu.utn.frbb.tup;
 
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
+import ar.edu.utn.frbb.tup.model.Movimiento;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.model.enums.TipoPersona;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.ClienteDto;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.CuentaDto;
+import ar.edu.utn.frbb.tup.presentation.modelDTO.TransferDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 //clase creada para simular la creacion de los objetos necesarios
 //para la ejecucion de los test
@@ -53,11 +56,11 @@ public class GeneradorDeObjetosParaTests {
         return cuenta;
     }
 
-    public CuentaDto getCuentaDto(long dniTitular, TipoCuenta tipoCuenta, TipoMoneda tipoMoneda) {
+    public CuentaDto getCuentaDto(long dniTitular, String tipoCuenta, String tipoMoneda) {
         CuentaDto cuentaDto = new CuentaDto();
         cuentaDto.setDniTitular(dniTitular);
-        cuentaDto.setTipoCuenta(tipoCuenta.toString());
-        cuentaDto.setTipoMoneda(tipoMoneda.toString());
+        cuentaDto.setTipoCuenta(tipoCuenta);
+        cuentaDto.setTipoMoneda(tipoMoneda);
 
         return cuentaDto;
     }
@@ -68,5 +71,34 @@ public class GeneradorDeObjetosParaTests {
         lista.add(getCliente("Juan", 12345678L));
 
         return lista;
+    }
+
+    public Set<Cuenta> getListaDeCuentas(Cuenta cuenta){
+        Set<Cuenta> lista = new java.util.HashSet<>(Set.of(cuenta));
+        lista.add(cuenta);
+
+        return lista;
+    }
+
+    public List<Movimiento> getListaDeMovimientos() {
+        List<Movimiento> lista = new ArrayList<>();
+        lista.add(getMovimiento(123456, "Deposito", 1000));
+        lista.add(getMovimiento(123456, "Extraccion", 500));
+
+        return lista;
+    }
+
+    private Movimiento getMovimiento(int i, String deposito, int i1) {
+        Movimiento movimiento = new Movimiento();
+        movimiento.setCBU(i);
+        movimiento.setTipoOperacion(deposito);
+        movimiento.setMonto(i1);
+
+        return movimiento;
+    }
+
+    public TransferDto getTransferDto(long CBUOrigen, long CBUDestino, double monto){
+        TransferDto transferDto = new TransferDto(CBUOrigen, CBUDestino, monto);
+        return transferDto;
     }
 }

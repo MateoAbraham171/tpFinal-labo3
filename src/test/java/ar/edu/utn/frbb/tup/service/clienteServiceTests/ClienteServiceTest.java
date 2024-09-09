@@ -3,6 +3,7 @@ package ar.edu.utn.frbb.tup.service.clienteServiceTests;
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteAlreadyExistsException;
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.NoExistenClientesException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.ConflictException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
@@ -32,8 +33,7 @@ public class ClienteServiceTest {
     @Mock private MostradorDeCliente mostradorDeCliente;
     @Mock private MostradorDeTodosClientes mostradorDeTodosClientes;
 
-    @InjectMocks
-    private ClienteService clienteService;
+    @InjectMocks private ClienteService clienteService;
 
     @BeforeEach
     public void setUp() {
@@ -41,86 +41,67 @@ public class ClienteServiceTest {
     }
 
     @Test
-    public void testCrearClienteServiceSuccess() throws ConflictException {
+    public void testCrearClienteServiceSuccess() throws ConflictException, BadRequestException {
         Cliente cliente = new Cliente(clienteDto);
         when(creadorDeCliente.crearCliente(clienteDto)).thenReturn(cliente);
-
         Cliente clienteCreado = clienteService.crearCliente(clienteDto);
-
         assertNotNull(clienteCreado);
         assertEquals(cliente, clienteCreado);
         verify(creadorDeCliente, times(1)).crearCliente(clienteDto);
     }
 
     @Test
-    public void testCrearClienteServiceFail() throws ConflictException {
+    public void testCrearClienteServiceFail() throws ConflictException, BadRequestException {
         when(creadorDeCliente.crearCliente(clienteDto)).thenThrow(new ClienteAlreadyExistsException());
-
         assertThrows(ClienteAlreadyExistsException.class, () -> clienteService.crearCliente(clienteDto));
-
         verify(creadorDeCliente, times(1)).crearCliente(clienteDto);
     }
 
     @Test
-    public void testEliminarClienteServiceSuccess() throws NotFoundException {
+    public void testEliminarClienteServiceSuccess() throws NotFoundException, BadRequestException {
         when(eliminadorDeCliente.eliminarCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
-
         Cliente clienteEliminado = clienteService.eliminarCliente(clienteDto.getDni());
-
         assertNotNull(clienteEliminado);
         assertEquals(clienteDto.getDni(), clienteEliminado.getDni());
-
         verify(eliminadorDeCliente, times(1)).eliminarCliente(clienteDto.getDni());
     }
 
     @Test
     public void testEliminarClienteServiceFail() throws NotFoundException {
         when(eliminadorDeCliente.eliminarCliente(clienteDto.getDni())).thenThrow(new ClienteNoEncontradoException(clienteDto.getDni()));
-
         assertThrows(NotFoundException.class, () -> clienteService.eliminarCliente(clienteDto.getDni()));
-
         verify(eliminadorDeCliente, times(1)).eliminarCliente(clienteDto.getDni());
     }
 
     @Test
-    public void testModificarClienteServiceSuccess() throws NotFoundException {
+    public void testModificarClienteServiceSuccess() throws NotFoundException, BadRequestException {
         when(modificadorDeCliente.modificarCliente(clienteDto)).thenReturn(new Cliente(clienteDto));
-
         Cliente clienteModificado = clienteService.modificarCliente(clienteDto);
-
         assertNotNull(clienteModificado);
         assertEquals(clienteDto.getDni(), clienteModificado.getDni());
-
         verify(modificadorDeCliente, times(1)).modificarCliente(clienteDto);
     }
 
     @Test
-    public void testModificarClienteServiceFail() throws NotFoundException {
+    public void testModificarClienteServiceFail() throws NotFoundException, BadRequestException {
         when(modificadorDeCliente.modificarCliente(clienteDto)).thenThrow(new ClienteNoEncontradoException(clienteDto.getDni()));
-
         assertThrows(ClienteNoEncontradoException.class, () -> clienteService.modificarCliente(clienteDto));
-
         verify(modificadorDeCliente, times(1)).modificarCliente(clienteDto);
     }
 
     @Test
-    public void testMostrarClienteServiceSuccess() throws NotFoundException {
+    public void testMostrarClienteServiceSuccess() throws NotFoundException, BadRequestException {
         when(mostradorDeCliente.mostrarCliente(clienteDto.getDni())).thenReturn(new Cliente(clienteDto));
-
         Cliente clienteMostrado = clienteService.mostrarCliente(clienteDto.getDni());
-
         assertNotNull(clienteMostrado);
         assertEquals(clienteDto.getDni(), clienteMostrado.getDni());
-
         verify(mostradorDeCliente, times(1)).mostrarCliente(clienteDto.getDni());
     }
 
     @Test
     public void testMostrarClienteServiceFail() throws NotFoundException {
         when(mostradorDeCliente.mostrarCliente(clienteDto.getDni())).thenThrow(new ClienteNoEncontradoException(clienteDto.getDni()));
-
         assertThrows(ClienteNoEncontradoException.class, () -> clienteService.mostrarCliente(clienteDto.getDni()));
-
         verify(mostradorDeCliente, times(1)).mostrarCliente(clienteDto.getDni());
     }
 
@@ -128,21 +109,16 @@ public class ClienteServiceTest {
     public void testMostrarTodosClientesServiceSuccess() throws NotFoundException {
         List<Cliente> listaGenerada = generadorDeObjetosParaTests.getListaDeClientes();
         when(mostradorDeTodosClientes.mostrarTodosClientes()).thenReturn(listaGenerada);
-
         List<Cliente> listaClientesObtenida = clienteService.mostrarTodosClientes();
-
         assertNotNull(listaClientesObtenida);
         assertEquals(listaClientesObtenida, listaGenerada);
-
         verify(mostradorDeTodosClientes, times(1)).mostrarTodosClientes();
     }
 
     @Test
     public void testMostrarTodosClientesServiceFail() throws NotFoundException {
         when(mostradorDeTodosClientes.mostrarTodosClientes()).thenThrow(new NoExistenClientesException());
-
         assertThrows(NoExistenClientesException.class, () -> clienteService.mostrarTodosClientes());
-
         verify(mostradorDeTodosClientes, times(1)).mostrarTodosClientes();
     }
 }

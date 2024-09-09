@@ -1,6 +1,7 @@
 package ar.edu.utn.frbb.tup.service.clienteService;
 
 import ar.edu.utn.frbb.tup.exception.ClientesExceptions.ClienteNoEncontradoException;
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
@@ -15,7 +16,7 @@ public class ModificadorDeCliente {
         this.clienteDao = clienteDao;
     }
 
-    public Cliente modificarCliente(ClienteDto clienteDto) throws NotFoundException {
+    public Cliente modificarCliente(ClienteDto clienteDto) throws NotFoundException, BadRequestException {
         Cliente clienteModificado = new Cliente(clienteDto);
         Cliente cliente = clienteDao.findCliente(clienteModificado.getDni());
 

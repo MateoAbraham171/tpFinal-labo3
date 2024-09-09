@@ -1,15 +1,13 @@
 package ar.edu.utn.frbb.tup.model;
 
+import ar.edu.utn.frbb.tup.exception.HttpExceptions.BadRequestException;
 import ar.edu.utn.frbb.tup.model.enums.TipoCuenta;
 import ar.edu.utn.frbb.tup.model.enums.TipoMoneda;
 import ar.edu.utn.frbb.tup.presentation.modelDTO.CuentaDto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class  Cuenta {
@@ -29,7 +27,7 @@ public class  Cuenta {
         this.estado = true;
     }
 
-    public Cuenta(CuentaDto cuentaDto){
+    public Cuenta(CuentaDto cuentaDto) throws BadRequestException {
         Random r = new Random();
         this.balance = 0;
         this.CBU = r.nextInt(900000) + 100000;

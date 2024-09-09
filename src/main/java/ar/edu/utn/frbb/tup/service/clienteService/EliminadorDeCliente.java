@@ -5,8 +5,7 @@ import ar.edu.utn.frbb.tup.exception.HttpExceptions.NotFoundException;
 import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.persistence.DAO.ClienteDao;
 import ar.edu.utn.frbb.tup.persistence.DAO.CuentaDao;
-import ar.edu.utn.frbb.tup.persistence.DAO.MovimientoDao;
-import ar.edu.utn.frbb.tup.service.cuentaService.EliminadorDeCuentas;
+import ar.edu.utn.frbb.tup.service.cuentaService.EliminadorDeCuenta;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,9 +28,9 @@ public class EliminadorDeCliente {
         }
 
         List<Long> cbusDeCuentasParaEliminar = cuentaDao.getCBUsVinculadosPorDni(dni);
-        EliminadorDeCuentas eliminadorDeCuentas = new EliminadorDeCuentas(clienteDao, cuentaDao);
+        EliminadorDeCuenta eliminadorDeCuenta = new EliminadorDeCuenta(clienteDao, cuentaDao);
         for (long cuenta : cbusDeCuentasParaEliminar)
-            eliminadorDeCuentas.eliminarCuenta(dni, cuenta);
+            eliminadorDeCuenta.eliminarCuenta(dni, cuenta);
 
         clienteDao.deleteCliente(dni);
 

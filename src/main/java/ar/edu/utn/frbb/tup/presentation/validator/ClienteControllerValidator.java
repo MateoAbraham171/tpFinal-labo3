@@ -41,6 +41,12 @@ public class ClienteControllerValidator {
         validateSoloLetras(apellido, "apellido");
     }
 
+    private void validateSoloLetras(String str, String mensaje) throws BadRequestException {
+        if (!str.matches("[a-zA-Z \\-']+")) {
+            throw new InputInvalidoException("Error: El formato del " + mensaje + " es invalido");
+        }
+    }
+
     private void validateDireccion(String direccion) throws BadRequestException {
         if (direccion == null || direccion.isEmpty()) {
             throw new CampoVacioException("direccion");
@@ -61,38 +67,10 @@ public class ClienteControllerValidator {
         }
     }
 
-    //Valida que el mail no este vacio, no sea nulo y contenga @ y .
-    private void validateMail(String mail) throws BadRequestException {
-        if (mail == null || mail.isEmpty()) {
-            throw new CampoVacioException("mail");
-        }
-        if (!mail.contains("@") || !mail.contains(".")) {
-            throw new IllegalArgumentException("Error: Ingrese un mail válido");
-        }
-    }
-
-    //Valida que tipo de persona no este vacio y sea valido
-    private void validateTipoPersona(String tipoPersona) throws BadRequestException {
-        try {
-            TipoPersona.fromString(tipoPersona);
-        } catch (IllegalArgumentException ex) {
-            throw new InputInvalidoException("El tipo de persona no es correcto.");
-        }
-    }
-
-    public void validateDni(long dni) throws BadRequestException {
-        if (dni == 0) throw new CampoVacioException("DNI");
-        if (dni < 10000000 || dni > 99999999) throw new DniInvalidoException();
-    }
-
     private void validateFechaNacimiento(String fechaNacimiento) throws BadRequestException, ConflictException {
-        try {
             LocalDate fechaNacimientoParseada = LocalDate.parse(fechaNacimiento);
             validarSiFechaDeNacimientoEsPosible(fechaNacimientoParseada);
             esMayor(fechaNacimientoParseada);
-        } catch (DateTimeParseException | NullPointerException e) {
-            throw new IllegalArgumentException("Error: La fecha de nacimiento no es válida");
-        }
     }
 
     private void validarSiFechaDeNacimientoEsPosible(LocalDate fechaNacimiento) throws BadRequestException {
@@ -112,10 +90,29 @@ public class ClienteControllerValidator {
         }
     }
 
-    private void validateSoloLetras(String str, String mensaje) throws BadRequestException {
-        if (!str.matches("[a-zA-Z \\-']+")) {
-            throw new InputInvalidoException("Error: El formato del " + mensaje + " es invalido");
+    private void validateMail(String mail) throws BadRequestException {
+        if (mail == null || mail.isEmpty()) {
+            throw new CampoVacioException("mail");
         }
+        if (!mail.contains("@") || !mail.contains(".")) {
+            throw new InputInvalidoException("Error: Ingrese un mail válido");
+        }
+    }
+
+    private void validateTipoPersona(String tipoPersona) throws BadRequestException {
+        if (tipoPersona == null || tipoPersona.isEmpty()) {
+            throw new CampoVacioException("tipoPersona");
+        }
+        try {
+            TipoPersona.fromString(tipoPersona);
+        } catch (BadRequestException ex) {
+            throw new InputInvalidoException("El tipo de persona debe ser 'F' o 'J'.");
+        }
+    }
+
+    public void validateDni(long dni) throws BadRequestException {
+        if (dni == 0) throw new CampoVacioException("DNI");
+        if (dni < 10000000 || dni > 99999999) throw new DniInvalidoException();
     }
 }
 
