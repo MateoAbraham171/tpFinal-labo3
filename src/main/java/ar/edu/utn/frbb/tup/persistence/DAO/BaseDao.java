@@ -72,6 +72,7 @@ public abstract class BaseDao<T> {
             BufferedReader reader = new BufferedReader(fileReader);
 
             String linea;
+            linea = reader.readLine();
 
             while ((linea = reader.readLine()) != null) {
                 String[] datos = linea.split(",");
@@ -84,6 +85,7 @@ public abstract class BaseDao<T> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         return null;
     }
 

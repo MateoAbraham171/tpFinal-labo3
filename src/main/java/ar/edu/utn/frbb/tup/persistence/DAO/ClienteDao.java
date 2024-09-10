@@ -37,11 +37,11 @@ public class ClienteDao extends BaseDao<Cliente> {
         saveInfo(sb, RUTA_ARCHIVO);
     }
 
-    public void deleteCliente(Long dni) {
+    public void deleteCliente(long dni) {
         deleteInfo(dni, RUTA_ARCHIVO);
     }
 
-    public Cliente findCliente(Long dni) {
+    public Cliente findCliente(long dni) {
         Cliente cliente = findInfo(dni, RUTA_ARCHIVO);
 
         if (cliente == null)

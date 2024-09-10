@@ -1,3 +1,1 @@
 CBU, DNI titular, estado, saldo, fecha creacion, tipo de cuenta, tipo de moneda
-212853,51754556,true,999900.0,2024-09-09,CAJA_AHORRO,PESOS
-822559,51754556,true,100.0,2024-09-09,CUENTA_CORRIENTE,DOLARES

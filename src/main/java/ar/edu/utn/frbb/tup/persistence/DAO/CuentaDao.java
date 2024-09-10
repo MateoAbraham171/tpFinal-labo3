@@ -91,7 +91,6 @@ public class CuentaDao extends BaseDao<Cuenta> {
         saveCuenta(cuentaActualizada);
     }
 
-
     //Funcion para parsear los datos leidos del archivo a un objeto tipo 'Cuenta'
     @Override
     public Cuenta parseDatosToObject(String[] datos){

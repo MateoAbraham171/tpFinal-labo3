@@ -25,7 +25,6 @@ public class CuentaController {
         cuentaService.inicializarCuentas();
     }
 
-    // Métodos
     @GetMapping("/{dni}")
     public ResponseEntity<Set<Cuenta>> getAllCuentasByDni(@PathVariable long dni) throws NotFoundException {
         return new ResponseEntity<>(cuentaService.mostrarCuenta(dni), HttpStatus.OK);
